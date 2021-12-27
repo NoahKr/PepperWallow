@@ -11,7 +11,8 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 1. Clone the project
 2. Navigate to the directory
 3. Open it in a command line utility (I personally use powershell)
-4. execute `npm run install` and answer the prompts.
+4. execute `npm install` to install the dependencies.
+4. execute `npm run pep-install` and answer the prompts.
 5. Profit!
 
 # Usage
@@ -23,7 +24,7 @@ These actions include:
 - "Show Current Wallpaper" - shows a dialog that tells you the path to the currently applied wallpaper.
 
 # Uninstall
-1. `npm run uninstall`
+1. `npm run pep-uninstall`
 2. Delete this directory
 
 # Credits
