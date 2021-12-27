@@ -31,3 +31,10 @@ export function updateUsedWallpapers(usedWallpaper) {
     config.usedWallpapers.push(usedWallpaper);
     update(config);
 }
+
+export function clearUsedWallpapers() {
+    const config = get();
+
+    config.usedWallpapers = [];
+    update(config);
+}

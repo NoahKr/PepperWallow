@@ -109,4 +109,4 @@ dist
 # project ignores:
 .config
 run-*.cmd
-registry.reg
+registry-*.reg

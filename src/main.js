@@ -1,5 +1,3 @@
-// TODO log all errors into file!!!
-
 import * as Wallpaper from "./helpers/wallpaper.js";
 import {logError} from "./helpers/log.js";
 
@@ -12,6 +10,9 @@ async function main() {
         switch (command) {
             case "next-wallpaper":
                 await Wallpaper.next(source);
+                break;
+            case "show-current":
+                await Wallpaper.showCurrent(source);
                 break;
             default:
                 console.log(`Supplied argument ${firstArg} is not a valid argument.`)

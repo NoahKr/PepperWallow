@@ -9,7 +9,3 @@ export function log(message, source) {
 export function logError(error, source) {
     log(error.message, source);
 }
-
-export function createLogFile() {
-
-}

@@ -1,9 +1,13 @@
 import {askInput, getCurrentDirPath} from "./helpers/utils.js";
+import {createAndInstallRegistry} from "./helpers/registry.js"
+import * as Config from './helpers/config.js';
+
 import _ from 'lodash';
 import fs from 'fs';
-import * as Config from './helpers/config.js';
 import childProcess from 'child_process';
 
+// TODO clean up this file with all the escapes etc.
+// TODO move all the working files (.cmd .reg) to separate directory
 
 async function main() {
     console.log('Hello! Welcome to the install script for PepperWallow - a barebones wallpaper manager.');
@@ -93,15 +97,15 @@ async function initWallpaperChangeInterval() {
 }
 
 async function initRegistry() {
-    const agreed = await askInput('PepperWallow will now add registry key so you can change the wallpaper by right-clicking your desktop. Is this okay? (Y/n) ');
+    const agreed = await askInput('PepperWallow will now add registry keys so you can do actions like changing the wallpaper by right-clicking your desktop. Is this okay? (Y/n) ');
 
     if (_.toLower(agreed) !== 'y') {
         console.log('User did not agree, not setting registry');
         return;
     }
 
-    createRegistryFile();
-    installRegistry();
+    createAndInstallRegistry('next-wallpaper', 'Next Wallpaper');
+    createAndInstallRegistry('show-current', 'Show Current Wallpaper');
     console.log('Registry key added!\n')
 }
 

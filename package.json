@@ -12,7 +12,8 @@
   "devDependencies": {},
   "scripts": {
     "install": "node src/install.js",
-    "next-wallpaper": "node src/main.js next-wallpaper"
+    "next-wallpaper": "node src/main.js next-wallpaper",
+    "show-current": "node src/main.js show-current"
   },
   "repository": {
     "type": "git",
