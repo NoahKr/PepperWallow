@@ -12,6 +12,7 @@
   "devDependencies": {},
   "scripts": {
     "install": "node src/install.js",
+    "uninstall": "node src/uninstall.js",
     "next-wallpaper": "node src/main.js next-wallpaper",
     "show-current": "node src/main.js show-current",
     "clear-log": "rm .log"

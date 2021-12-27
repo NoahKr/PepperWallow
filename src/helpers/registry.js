@@ -23,14 +23,29 @@ function createRegistryFile(action, text) {
 
 `;
 
-    Installation.addBinary(`registry-${action}.reg`, fileContent);
+    Installation.setBinary(`registry-${action}.reg`, fileContent);
 }
 
 function installRegistry(action) {
-    const binaryPath = Installation.getBinaryPathInWinFormat(`registry-${action}.reg`).replace(/\\/g, '\\\\');
+    const binaryPath = Installation.getBinaryPath(`registry-${action}.reg`, true).replace(/\\/g, '\\\\');
     const command = `regedit.exe /s ${binaryPath}`;
     console.log('install reg command', command)
 
     childProcess.execSync(command);
+}
+
+export function uninstall() {
+    uninstallRegistry('next-wallpaper');
+    uninstallRegistry('show-current');
+}
+
+function uninstallRegistry(action) {
+    const registryName = `registry-${action}.reg`;
+
+    const binary = Installation.getBinary(registryName);
+    const replaced = binary.replace(/\[/g, '[-');
+
+    Installation.setBinary(registryName, replaced);
+    installRegistry(action);
 }
 

@@ -9,7 +9,7 @@ export function createActionCmd(action, source) {
     const currentDir = getCurrentDirPath();
     const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run ${action} --prefix "${currentDir}" -- ${source}`;
 
-    const posixPath = addBinary(`run-${source}-${action}.cmd`, fileContent);
+    const posixPath = setBinary(`run-${source}-${action}.cmd`, fileContent);
     return posixPath.replace(/\//g, '\\');
 }
 
@@ -21,13 +21,22 @@ export function getConfig() {
     return getFileContent(configPath, 'config');
 }
 
-export function addBinary(name, content) {
+export function setBinary(name, content) {
     return setFileContent(binariesPath, name, content);
 }
 
-export function getBinaryPathInWinFormat(fileName) {
+export function getBinaryPath(fileName, winFormat = false) {
     const currentDirPath = getCurrentDirPath();
-    return `${currentDirPath}/${binariesPath}/${fileName}`.replace(/\//g, '\\');
+    const path =  `${currentDirPath}/${binariesPath}/${fileName}`
+
+    if (winFormat) {
+        return path.replace(/\//g, '\\');
+    }
+    return path
+}
+
+export function getBinary(name) {
+    return getFileContent(binariesPath, name)
 }
 
 function setFileContent(dirPath, fileName, content) {
@@ -53,5 +62,11 @@ function getFileContent(dirPath, fileName) {
 function ensureDirExists(dirPath) {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true })
+    }
+}
+
+export function uninstall() {
+    if (fs.existsSync(installationPath)) {
+        fs.rmdirSync(installationPath, { recursive: true })
     }
 }

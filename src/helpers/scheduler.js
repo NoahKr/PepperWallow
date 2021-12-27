@@ -8,7 +8,7 @@ export function install() {
 
     // Ensure it doesn't exist yet so next command won't error.
     try {
-        childProcess.execSync("schtasks /delete /tn PepperWallow /f >NUL 2>&1");
+        remove();
     } catch (e) {
         // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
     }
@@ -18,4 +18,12 @@ export function install() {
     const command = resolveInvisibleCommand(actionCmd);
     const scheduleTaskCommand = `schtasks /create /sc MINUTE /mo ${interval} /tn PepperWallow /tr "${command}"`;
     childProcess.execSync(scheduleTaskCommand);
+}
+
+export function uninstall() {
+    remove();
+}
+
+function remove() {
+    childProcess.execSync("schtasks /delete /tn PepperWallow /f >NUL 2>&1");
 }
