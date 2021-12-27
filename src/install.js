@@ -1,6 +1,7 @@
-const {askInput, ensurePosixPathFormat} = require("./helpers/utils");
-const _ = require('lodash');
-const fs = require('fs');
+import {askInput} from "./helpers/utils.js";
+import _ from 'lodash';
+import fs from 'fs';
+import * as Config from './helpers/config.js';
 
 async function main() {
     console.log('Hello! Welcome to the install script for PepperWallow - a barebones wallpaper manager.');
@@ -9,6 +10,7 @@ async function main() {
     await initConfig();
 
     console.log('Configuration has been set up!')
+    process.exit(0)
 }
 
 async function initConfig() {
@@ -16,24 +18,23 @@ async function initConfig() {
     const wallpaperPath = await initWallpaperDirectory();
     const interval = await initWallpaperChangeInterval();
 
-    await storeConfig(wallpaperPath, interval);
+    storeConfig(wallpaperPath, interval);
 }
 
 async function initWallpaperDirectory() {
     const enteredPath = await askInput('Please enter the path to the directory the wallpapers you want to use are in: ');
-    const posixPath = ensurePosixPathFormat(enteredPath);
 
-    if (!posixPath || 0 ===_.trim(posixPath).length) {
+    if (!enteredPath || 0 ===_.trim(enteredPath).length) {
         console.log(`Entered path "${enteredPath}" is invalid, please try again.`);
         return await initWallpaperDirectory();
     }
 
-    if (!fs.existsSync(posixPath)) {
+    if (!fs.existsSync(enteredPath)) {
         console.log(`Entered path "${enteredPath}" does not exist, please try again.`);
         return await initWallpaperDirectory();
     }
 
-    if (!fs.lstatSync(posixPath).isDirectory()) {
+    if (!fs.lstatSync(enteredPath).isDirectory()) {
         console.log(`Entered path "${enteredPath}" is not a directory, please try again.`);
         return await initWallpaperDirectory();
     }
@@ -43,7 +44,7 @@ async function initWallpaperDirectory() {
         return await initWallpaperDirectory();
     }
 
-    return posixPath;
+    return enteredPath;
 }
 
 async function initWallpaperChangeInterval() {
@@ -68,8 +69,8 @@ async function initWallpaperChangeInterval() {
     return interval;
 }
 
-async function storeConfig(wallpaperPath, changeInterval) {
-    fs.writeFileSync('./.config', JSON.stringify({wallpaperPath, changeInterval}))
+function storeConfig(wallpaperPath, changeInterval) {
+    Config.set(wallpaperPath, changeInterval);
 }
 
 main();

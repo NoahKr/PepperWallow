@@ -2,13 +2,16 @@
   "name": "pepperwallow",
   "version": "0.0.1",
   "description": "",
-  "main": "src/install.js",
+  "main": "src/main.js",
   "dependencies": {
     "lodash": "^4.17.21",
-    "upath": "^2.0.1"
+    "upath": "^2.0.1",
+    "wallpaper": "^6.0.0"
   },
+  "type": "module",
   "devDependencies": {},
   "scripts": {
+    "next-wallpaper": "node src/main.js next-wallpaper",
     "install": "node src/install.js"
   },
   "repository": {
