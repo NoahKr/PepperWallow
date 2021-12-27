@@ -1,7 +1,11 @@
-# PepperWallow
+# PepperWallow - Barebones wallpaper manager
+Allows you to specify a directory from which wallpapers will be set (on all monitors).
+The applied wallpapers are shuffled which means that you won't see the same wallpaper twice until all wallpapers in the directory have been shown. 
+
+(Please note that this is a hobby project and is by no means perfect. Code could be cleaner for one thing...)
 
 # Pre-requisites
-- [Node 14](https://nodejs.org/en/download/) 
+- [Node](https://nodejs.org/en/download/) (Tested on Node 14)
 
 # Install
 1. Clone the project
@@ -11,8 +15,12 @@
 5. Profit!
 
 # Usage
-TODO talk about contextMenus
-TODO talk about scheduled task
+After running the install script your wallpaper will be changed at the interval you specified.
+
+Additionally there are also some actions you can perform manually by right-clicking your desktop.
+These actions include:
+- "Next Wallpaper" - changes the wallpaper
+- "Show Current Wallpaper" - shows a dialog that tells you the path to the currently applied wallpaper.
 
 # Uninstall
 1. `npm run uninstall`
