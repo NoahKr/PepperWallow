@@ -108,5 +108,5 @@ dist
 
 # project ignores:
 .config
-run.cmd
+run-*.cmd
 registry.reg

@@ -100,7 +100,6 @@ async function initRegistry() {
         return;
     }
 
-    createCmdFile();
     createRegistryFile();
     installRegistry();
     console.log('Registry key added!\n')
@@ -113,15 +112,16 @@ function installRegistry() {
     childProcess.execSync(`regedit.exe ${path}`);
 }
 
-function createCmdFile() {
+function createRunCmd(source) {
     const currentDir = getCurrentDirPath();
-    const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run next-wallpaper --prefix "${currentDir}"`;
+    const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run next-wallpaper --prefix "${currentDir}" -- ${source}`;
 
-    fs.writeFileSync('./run.cmd', fileContent);
+    fs.writeFileSync(`./run-${source}.cmd`, fileContent);
 }
 
 function installScheduledTask() {
     console.log('Creating scheduled task.');
+    createRunCmd('schtasks');
 
     const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
 
@@ -134,7 +134,7 @@ function installScheduledTask() {
 
     const interval = Config.changeInterval();
 
-    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run.cmd\\"`;
+    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run-schtasks.cmd\\"`;
     const scheduleTaskCommand = `schtasks /create /sc MINUTE /mo ${interval} /tn PepperWallow /tr "${command}"`;
     childProcess.execSync(scheduleTaskCommand);
 
@@ -142,8 +142,10 @@ function installScheduledTask() {
 }
 
 function createRegistryFile() {
+    createRunCmd('registry');
+
     const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
-    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run.cmd\\"`;
+    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run-registry.cmd\\"`;
 
     const fileContent = `Windows Registry Editor Version 5.00
 

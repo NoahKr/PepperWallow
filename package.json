@@ -11,8 +11,8 @@
   "type": "module",
   "devDependencies": {},
   "scripts": {
-    "next-wallpaper": "node src/main.js next-wallpaper",
-    "install": "node src/install.js"
+    "install": "node src/install.js",
+    "next-wallpaper": "node src/main.js next-wallpaper"
   },
   "repository": {
     "type": "git",

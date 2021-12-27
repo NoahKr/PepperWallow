@@ -2,16 +2,19 @@ import {getWallpaper, setWallpaper} from 'wallpaper';
 import * as Config from './config.js';
 import fs from 'fs';
 import _ from 'lodash';
+import {log} from "./log.js";
 
 async function current() {
     return await getWallpaper();
 }
 
-export async function next() {
+export async function next(source) {
     const [path, fileName] = resolveNextWallpaper();
 
     await setWallpaper(path);
     Config.updateUsedWallpapers(fileName);
+
+    log(`set wallpaper to ${fileName}`, source);
 }
 
 function resolveNextWallpaper() {
