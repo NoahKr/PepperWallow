@@ -28,3 +28,5 @@ These actions include:
 
 # Credits
 Salt-shaker icons made by https://www.freepik.com via https://www.flaticon.com/
+
+https://github.com/sindresorhus/wallpaper for the wallpaper package which this application heavily relies upon.
