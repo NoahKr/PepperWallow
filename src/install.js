@@ -10,6 +10,7 @@ async function main() {
     console.log('This script will setup the configuration file that PepperWallow uses to function.\n');
 
     await initConfig();
+    installScheduledTask();
     await initRegistry();
 
     console.log('Installation finished!');
@@ -63,14 +64,14 @@ async function initWallpaperDirectory() {
 async function initWallpaperChangeInterval() {
     const current = Config.changeInterval();
     if (current) {
-        const change = await askInput(`The wallpaper change interval is currently set to "${current}". Do you want to change this value? (Y/n) `);
+        const change = await askInput(`The wallpaper change interval is currently set to "${current}" (minutes). Do you want to change this value? (Y/n) `);
         if (_.toLower(change) !== 'y') {
             console.log('Not changing wallpaper change interval');
             return current;
         }
     }
 
-    const enteredInterval = await askInput('Please enter in seconds every how often the wallpapers should change: ');
+    const enteredInterval = await askInput('Please enter in minutes every how often the wallpapers should change: ');
     const interval = _.parseInt(enteredInterval);
 
     if (!_.isInteger(interval)) {
@@ -117,6 +118,27 @@ function createCmdFile() {
     const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run next-wallpaper --prefix "${currentDir}"`;
 
     fs.writeFileSync('./run.cmd', fileContent);
+}
+
+function installScheduledTask() {
+    console.log('Creating scheduled task.');
+
+    const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
+
+    // Ensure it doesn't exist yet so next command won't error.
+    try {
+        childProcess.execSync("schtasks /delete /tn PepperWallow /f >NUL 2>&1");
+    } catch (e) {
+        // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
+    }
+
+    const interval = Config.changeInterval();
+
+    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run.cmd\\"`;
+    const scheduleTaskCommand = `schtasks /create /sc MINUTE /mo ${interval} /tn PepperWallow /tr "${command}"`;
+    childProcess.execSync(scheduleTaskCommand);
+
+    console.log('Scheduled task created!\n');
 }
 
 function createRegistryFile() {
