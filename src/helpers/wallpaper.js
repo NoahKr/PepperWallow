@@ -22,7 +22,7 @@ function resolveNextWallpaper() {
     const chosenWallpaper = unused[Math.floor(Math.random()*unused.length)];
 
     // TODO test what happens if they're all used;
-    const chosenWallpaperPath = Config.wallpaperPath() + '/' + chosenWallpaper;
+    const chosenWallpaperPath = Config.wallpaperPath() + '\\' + chosenWallpaper;
     return [chosenWallpaperPath, chosenWallpaper];
 }
 

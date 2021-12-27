@@ -1,9 +1,10 @@
 import rlp from 'readline';
-import upath from 'upath';
-import _ from 'lodash';
 
 import path from 'path';
+
 const __dirname = path.resolve();
+
+import childProcess from 'child_process';
 
 const rl = rlp.createInterface({
     input: process.stdin,
@@ -16,21 +17,18 @@ export function askInput(question) {
     });
 }
 
-// export function toPosixFormat(givenPath) {
-//     let unixPath = upath.toUnix(givenPath);
-//     const isWSL = _.startsWith(__dirname, '/mnt/');
-//
-//     if (isWSL) {
-//         const match = unixPath.match(/^(.*):.*$/);
-//         if (match) {
-//             const driveLetter = match[1];
-//             unixPath = unixPath.replace(/^(.*:)/, `/mnt/${driveLetter.toLowerCase()}`)
-//         }
-//     }
-//
-//     return unixPath;
-// }
-
-export function toWinFormat() {
-
+export function getCurrentDirPath() {
+    return __dirname;
 }
+
+// export function exec() {
+//     return new Promise(async resolve => {
+//         childProcess.exec(command, (err, stout, stderr) {
+//             if (err) {
+//                 reject(stderr);
+//             } else {
+//                 resolve(stdout)
+//             }
+//         });
+//     });
+// }
