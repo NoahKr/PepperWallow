@@ -16,3 +16,13 @@ export function askInput(question) {
 export function getCurrentDirPath() {
     return __dirname;
 }
+
+export function resolveInvisibleCommand(baseCommand) {
+    const currentDir = getCurrentDirPath();
+    const invisibleVbsPath = `${currentDir}\\bin\\invisible.vbs`.replace(/\\/g, '\\\\\\\\');
+    const commandPath = baseCommand.replace(/\\/g, '\\\\\\\\');
+
+    const fullCommand = `wscript.exe \\"${invisibleVbsPath}\\" \\"${commandPath}\\"`;
+
+    return fullCommand;
+}

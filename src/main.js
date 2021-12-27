@@ -2,11 +2,11 @@ import * as Wallpaper from "./helpers/wallpaper.js";
 import {logError} from "./helpers/log.js";
 
 async function main() {
-    try {
-        const args = process.argv.slice(2);
-        const command = args[0];
-        const source = args[1];
+    const args = process.argv.slice(2);
+    const command = args[0];
+    const source = args[1];
 
+    try {
         switch (command) {
             case "next-wallpaper":
                 await Wallpaper.next(source);

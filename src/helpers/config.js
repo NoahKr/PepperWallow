@@ -1,16 +1,25 @@
-import fs from 'fs';
-const configPath = './.config';
+import * as Installation from './installation.js';
 
 export function set(wallpaperPath, changeInterval, usedWallpapers = []) {
-    fs.writeFileSync(configPath, JSON.stringify({wallpaperPath, changeInterval, usedWallpapers}))
+    Installation.storeConfig(JSON.stringify({wallpaperPath, changeInterval, usedWallpapers}));
 }
 
 function update(newConfig) {
-    fs.writeFileSync(configPath, JSON.stringify(newConfig))
+    Installation.storeConfig(JSON.stringify(newConfig));
 }
 
 function get() {
-    return JSON.parse(fs.readFileSync(configPath));
+    const configContent = Installation.getConfig();
+
+    if (!configContent) {
+        return {
+            wallpaperPath: null,
+            changeInterval: null,
+            usedWallpapers: null
+        }
+    }
+
+    return JSON.parse(configContent);
 }
 
 export function wallpaperPath() {

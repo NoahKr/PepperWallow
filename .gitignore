@@ -107,6 +107,4 @@ dist
 .idea/*
 
 # project ignores:
-.config
-run-*.cmd
-registry-*.reg
+.installation/*

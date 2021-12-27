@@ -7,5 +7,5 @@ export function log(message, source) {
 }
 
 export function logError(error, source) {
-    log(error.message, source);
+    log(error.stack, source);
 }
