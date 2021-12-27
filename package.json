@@ -1,0 +1,24 @@
+{
+  "name": "pepperwallow",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/install.js",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "upath": "^2.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "install": "node src/install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoahKr/PepperWallow.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NoahKr/PepperWallow/issues"
+  },
+  "homepage": "https://github.com/NoahKr/PepperWallow#readme"
+}
