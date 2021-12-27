@@ -1,9 +1,0 @@
-Windows Registry Editor Version 5.00
-
-[HKEY_CLASSES_ROOT\Directory\Background\shell\PepperWallow]
-@="Next wallpaper"
-"Icon"="\"D:\\BurningTrunks\\Documents\\Projects\\PepperWallow\\salt.ico\""
-
-[HKEY_CLASSES_ROOT\Directory\Background\shell\PepperWallow\command]
-@="\"C:\\Program Files\\nodejs\\npm.cmd\" run next-wallpaper --prefix \"D:\\BurningTrunks\\Documents\\Projects\\PepperWallow"
-

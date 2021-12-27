@@ -99,6 +99,7 @@ async function initRegistry() {
         return;
     }
 
+    createCmdFile();
     createRegistryFile();
     installRegistry();
     console.log('Registry key added!\n')
@@ -111,8 +112,17 @@ function installRegistry() {
     childProcess.execSync(`regedit.exe ${path}`);
 }
 
+function createCmdFile() {
+    const currentDir = getCurrentDirPath();
+    const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run next-wallpaper --prefix "${currentDir}"`;
+
+    fs.writeFileSync('./run.cmd', fileContent);
+}
+
 function createRegistryFile() {
-    const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\');
+    const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
+    const command = `wscript.exe \\"${currentDir}\\\\\\\\invisible.vbs\\" \\"${currentDir}\\\\\\\\run.cmd\\"`;
+
     const fileContent = `Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\PepperWallow]
@@ -120,7 +130,7 @@ function createRegistryFile() {
 "Icon"="\\"${currentDir}\\\\salt.ico\\""
 
 [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\PepperWallow\\command]
-@="\\"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\\" run next-wallpaper --prefix \\"${currentDir}"
+@="${command}"
 
 `;
 
