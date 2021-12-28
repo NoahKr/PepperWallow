@@ -14,7 +14,7 @@ function installScheduledTask(taskName, mode, interval = null) {
 
     // Ensure it doesn't exist yet so next command won't error.
     try {
-        remove();
+        remove(taskName);
     } catch (e) {
         // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
     }
