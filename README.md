@@ -1,4 +1,4 @@
-# PepperWallow - Barebones wallpaper manager
+# PepperWallow - Barebones wallpaper manager (for Windows 10)
 Allows you to specify a directory from which wallpapers will be set (on all monitors).
 The applied wallpapers are shuffled which means that you won't see the same wallpaper twice until all wallpapers in the directory have been shown. 
 
