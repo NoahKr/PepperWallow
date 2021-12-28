@@ -19,15 +19,16 @@ function installScheduledTask(taskName, mode, interval = null) {
         // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
     }
 
-
     const command = resolveInvisibleCommand(actionCmd);
     let scheduleTaskCommand;
     if ('interval' === mode) {
         scheduleTaskCommand = `schtasks /create /sc MINUTE /mo ${interval} /tn ${taskName} /tr "${command}"`;
     } else {
-        scheduleTaskCommand = `schtasks /create /sc ONLOGON /tn ${taskName} /tr "${command}"`;
+        scheduleTaskCommand = `schtasks /create /sc ONLOGON /tn ${taskName} /tr "${command}" /ru %username%`;
     }
+    // TODO remove schtasks /Create /TR "echo kaas" /RU %username% /TN NoahTest /SC ONLOGON /IT
 
+    console.log('scheduleTaskCommand');
     childProcess.execSync(scheduleTaskCommand);
 }
 
