@@ -5,7 +5,7 @@ import {askInput} from "./helpers/utils.js";
 import _ from "lodash";
 
 async function main() {
-    const agreed = await askInput(`This will completely uninstall the PepperWallow application. Proceed? (Y/n)`);
+    const agreed = await askInput(`This will completely uninstall the PepperWallow application. Proceed? (Y/n) `);
     if (_.toLower(agreed) !== 'y') {
         process.exit(0);
         return;
@@ -15,8 +15,7 @@ async function main() {
     Registry.uninstall();
     Installation.uninstall();
 
-    console.log('Uninstall complete. You can now safely remove this directory')
-    process.exit(0);
+    console.log('Uninstall complete. You can now safely close this console and remove the directory');
 }
 
 

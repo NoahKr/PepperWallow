@@ -14,8 +14,7 @@ async function main() {
     initScheduledTasks();
     await initRegistry();
 
-    console.log('Installation finished!');
-    process.exit(0);
+    console.log('Installation finished! You can now close this console.');
 }
 
 async function initConfig() {
@@ -23,7 +22,7 @@ async function initConfig() {
     const interval = await initWallpaperChangeInterval();
 
     Config.set(wallpaperPath, interval);
-    console.log('Configuration set!\n');
+    console.log('Configuration set!');
 }
 
 async function initWallpaperDirectory() {
@@ -94,7 +93,7 @@ async function initWallpaperChangeInterval() {
 
 function initScheduledTasks() {
     Scheduler.install();
-    console.log('Scheduled tasks set!\n')
+    console.log('Scheduled tasks set!')
 }
 
 async function initRegistry() {
@@ -107,7 +106,7 @@ async function initRegistry() {
 
     Registry.createAndInstall('next-wallpaper', 'Next Wallpaper');
     Registry.createAndInstall('show-current', 'Show Current Wallpaper');
-    console.log('Registry keys set!\n')
+    console.log('Registry keys set!')
 }
 
 

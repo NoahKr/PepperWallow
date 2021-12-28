@@ -29,7 +29,6 @@ function createRegistryFile(action, text) {
 function installRegistry(action) {
     const binaryPath = Installation.getBinaryPath(`registry-${action}.reg`, true).replace(/\\/g, '\\\\');
     const command = `regedit.exe /s ${binaryPath}`;
-    console.log('install reg command', command)
 
     childProcess.execSync(command);
 }
@@ -43,6 +42,10 @@ function uninstallRegistry(action) {
     const registryName = `registry-${action}.reg`;
 
     const binary = Installation.getBinary(registryName);
+    if (!binary) {
+        return; // Registry doesn't exist. Maybe it was never installed.
+    }
+
     const replaced = binary.replace(/\[/g, '[-');
 
     Installation.setBinary(registryName, replaced);

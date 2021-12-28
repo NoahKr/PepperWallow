@@ -22,7 +22,6 @@ async function main() {
         logError(e, source);
     }
 
-    process.exit(0);
 }
 
 main();

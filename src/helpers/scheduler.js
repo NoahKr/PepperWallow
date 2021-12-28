@@ -13,11 +13,7 @@ function installScheduledTask(taskName, mode, interval = null) {
     const actionCmd = Installation.createActionCmd('next-wallpaper', 'schtasks');
 
     // Ensure it doesn't exist yet so next command won't error.
-    try {
-        remove(taskName);
-    } catch (e) {
-        // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
-    }
+    remove(taskName);
 
     const command = resolveInvisibleCommand(actionCmd);
     let scheduleTaskCommand;
@@ -26,9 +22,7 @@ function installScheduledTask(taskName, mode, interval = null) {
     } else {
         scheduleTaskCommand = `schtasks /create /sc ONLOGON /tn ${taskName} /tr "${command}" /ru %username%`;
     }
-    // TODO remove schtasks /Create /TR "echo kaas" /RU %username% /TN NoahTest /SC ONLOGON /IT
 
-    console.log('scheduleTaskCommand');
     childProcess.execSync(scheduleTaskCommand);
 }
 
@@ -37,6 +31,10 @@ export function uninstall() {
     remove('PepperWallow-logon');
 }
 
-function remove(taskName) {
-    childProcess.execSync(`schtasks /delete /tn ${taskName} /f >NUL 2>&1`);
+function remove(taskName, ignoreOnError) {
+    try {
+        childProcess.execSync(`schtasks /delete /tn ${taskName} /f >NUL 2>&1`);
+    } catch (e) {
+        // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
+    }
 }
