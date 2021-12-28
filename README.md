@@ -16,7 +16,7 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 5. Profit!
 
 # Usage
-After running the install script your wallpaper will be changed at the interval you specified.
+After running the install script your wallpaper will be changed at the interval you specified. (And when you logon)
 
 Additionally there are also some actions you can perform manually by right-clicking your desktop.
 These actions include:

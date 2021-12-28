@@ -11,7 +11,7 @@ async function main() {
     console.log('This script will setup PepperWallow.\n');
 
     await initConfig();
-    initScheduledTask();
+    initScheduledTasks();
     await initRegistry();
 
     console.log('Installation finished!');
@@ -84,7 +84,7 @@ async function initWallpaperChangeInterval() {
         return await initWallpaperChangeInterval();
     }
 
-    const agreed = await askInput(`Entered interval is "${enteredInterval}" seconds. Is this okay? (Y/n) `);
+    const agreed = await askInput(`Entered interval is every "${enteredInterval}" minute(s). Is this okay? (Y/n) `);
     if (_.toLower(agreed) !== 'y') {
         return await initWallpaperChangeInterval();
     }
@@ -92,13 +92,13 @@ async function initWallpaperChangeInterval() {
     return interval;
 }
 
-function initScheduledTask() {
+function initScheduledTasks() {
     Scheduler.install();
-    console.log('Scheduled task added!\n')
+    console.log('Scheduled tasks set!\n')
 }
 
 async function initRegistry() {
-    const agreed = await askInput('PepperWallow can add registry keys so you can manually perform actions like changing the wallpaper by right-clicking your desktop. Install registry keys? (Y/n) ');
+    const agreed = await askInput('PepperWallow can set registry keys so you can manually perform actions like changing the wallpaper by right-clicking your desktop. Install registry keys? (Y/n) ');
 
     if (_.toLower(agreed) !== 'y') {
         console.log('User did not agree, not setting registry');
@@ -107,7 +107,7 @@ async function initRegistry() {
 
     Registry.createAndInstall('next-wallpaper', 'Next Wallpaper');
     Registry.createAndInstall('show-current', 'Show Current Wallpaper');
-    console.log('Registry key added!\n')
+    console.log('Registry keys set!\n')
 }
 
 

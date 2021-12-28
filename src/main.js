@@ -2,12 +2,13 @@ import * as Wallpaper from "./helpers/wallpaper.js";
 import {logError} from "./helpers/log.js";
 
 async function main() {
-    const args = process.argv.slice(2);
-    const command = args[0];
-    const source = args[1];
-
+    let source;
     try {
-        switch (command) {
+        const args = process.argv.slice(2);
+        const action = args[0];
+        source = args[1];
+
+        switch (action) {
             case "next-wallpaper":
                 await Wallpaper.next(source);
                 break;
@@ -15,7 +16,7 @@ async function main() {
                 await Wallpaper.showCurrent(source);
                 break;
             default:
-                console.log(`Supplied argument ${firstArg} is not a valid argument.`)
+                console.log(`Supplied action ${action} is not a valid action.`)
         }
     } catch (e) {
         logError(e, source);
