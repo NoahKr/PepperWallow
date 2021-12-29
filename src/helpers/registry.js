@@ -12,13 +12,15 @@ function createRegistryFile(action, text) {
     const command = resolveInvisibleCommand(actionCmd);
     const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
 
+    // Key is prefixed with 000_ so it appears above other contextMenu items
     const fileContent = `Windows Registry Editor Version 5.00
 
-[HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\PepperWallow-${action}]
+[HKEY_CLASSES_ROOT\\DesktopBackground\\Shell\\000_PepperWallow-${action}]
 @="${text}"
 "Icon"="\\"${currentDir}\\\\assets\\\\salt.ico\\""
+"Position"="Bottom"
 
-[HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\PepperWallow-${action}\\command]
+[HKEY_CLASSES_ROOT\\DesktopBackground\\Shell\\000_PepperWallow-${action}\\command]
 @="${command}"
 
 `;
