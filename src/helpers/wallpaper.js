@@ -11,8 +11,7 @@ async function current() {
 
 export async function showCurrent(source) {
     const path = await current();
-    const message = `The currently shown wallpaper is: ${path}`;
-    childProcess.execSync(`msg %username% ${message}`);
+    childProcess.execSync(`explorer.exe /select,"${path}"`);
 
     log(`shown current wallpaper (${path})`, source);
 }
