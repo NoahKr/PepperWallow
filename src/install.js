@@ -2,6 +2,7 @@ import {askInput} from "./helpers/utils.js";
 import * as Registry from "./helpers/registry.js"
 import * as Config from './helpers/config.js';
 import * as Scheduler from './helpers/scheduler.js';
+import {log} from "./helpers/log.js";
 
 import _ from 'lodash';
 import fs from 'fs';
@@ -14,6 +15,7 @@ async function main() {
     initScheduledTasks();
     await initRegistry();
 
+    log(`application installed`, 'cmd-file');
     console.log('Installation finished! You can now close this console.');
 }
 
