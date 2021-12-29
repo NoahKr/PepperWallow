@@ -20,7 +20,7 @@ After running the install script your wallpaper will be changed at the interval 
 Additionally there are also some actions you can perform manually by right-clicking your desktop.
 These actions include:
 - "Next Wallpaper" - changes the wallpaper
-- "Show Current Wallpaper" - shows a dialog that tells you the path to the currently applied wallpaper.
+- "Show Current Wallpaper" - opens explorer and highlights the currently applied wallpaper.
 
 # Uninstall
 1. Double-click the uninstall.cmd in the root of the project.
