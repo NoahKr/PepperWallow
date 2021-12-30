@@ -15,6 +15,7 @@ export async function showCurrent(source) {
         childProcess.execSync(`explorer.exe /select,"${path}"`);
     } catch (e) {
         // Ignore, bug in windows causes exit code 1 in Node.
+        // https://github.com/nodejs/node/issues/23098
     }
 
     log(`shown current wallpaper (${path})`, source);
