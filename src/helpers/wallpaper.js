@@ -11,7 +11,11 @@ async function current() {
 
 export async function showCurrent(source) {
     const path = await current();
-    childProcess.execSync(`explorer.exe /select,"${path}"`);
+    try {
+        childProcess.execSync(`explorer.exe /select,"${path}"`);
+    } catch (e) {
+        // Ignore, bug in windows causes exit code 1 in Node.
+    }
 
     log(`shown current wallpaper (${path})`, source);
 }
