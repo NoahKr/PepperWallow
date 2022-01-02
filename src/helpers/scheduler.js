@@ -1,34 +1,45 @@
-import {resolveInvisibleCommand} from "./utils.js";
+import fs from 'fs';
+import {getWindowsUserID, resolveInvisibleCommand} from "./utils.js";
 import childProcess from 'child_process';
 import * as Config from "./config.js";
 import * as Installation from './installation.js'
 
 export function install() {
     const interval = Config.changeInterval();
-    installScheduledTask('PepperWallow-interval', 'interval', interval);
-    installScheduledTask('PepperWallow-logon', 'logon')
+    installScheduledTask('PepperWallow', interval);
 }
 
-function installScheduledTask(taskName, mode, interval = null) {
+function createScheduledTaskXML(interval) {
+    const templateContent = fs.readFileSync('bin/PepperWallow.xml', 'utf16le');
+
     const actionCmd = Installation.createActionCmd('next-wallpaper', 'schtasks');
+    const [command, arg] = resolveInvisibleCommand(actionCmd, true);
+
+    const content = templateContent
+        .replace('~~MINUTES~~', interval)
+        .replace('~~COMMAND~~', command)
+        .replace('~~ARGUMENTS~~', arg)
+        .replace('~~USERID~~', getWindowsUserID());
+
+    Installation.setBinary('PepperWallow.xml', content, 'utf16le');
+}
+
+function installScheduledTask(taskName, interval) {
 
     // Ensure it doesn't exist yet so next command won't error.
     remove(taskName);
 
-    const command = resolveInvisibleCommand(actionCmd);
-    let scheduleTaskCommand;
-    if ('interval' === mode) {
-        scheduleTaskCommand = `schtasks /create /sc MINUTE /mo ${interval} /tn ${taskName} /tr "${command}"`;
-    } else {
-        scheduleTaskCommand = `schtasks /create /sc ONLOGON /tn ${taskName} /tr "${command}" /ru %username%`;
-    }
+    // Create file that we need to import in the next step.
+    createScheduledTaskXML(interval);
+
+    const importFilePath = Installation.getBinaryPath('PepperWallow.xml', true);
+    let scheduleTaskCommand = `schtasks.exe /Create /XML ${importFilePath} /tn ${taskName}`;
 
     childProcess.execSync(scheduleTaskCommand);
 }
 
 export function uninstall() {
-    remove('PepperWallow-interval');
-    remove('PepperWallow-logon');
+    remove('PepperWallow');
 }
 
 function remove(taskName, ignoreOnError) {

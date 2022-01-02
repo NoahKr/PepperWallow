@@ -17,6 +17,7 @@ async function main() {
 
     log(`application installed`, 'cmd-file');
     console.log('Installation finished! You can now close this console.');
+    console.log('Please note that a computer restart is required for the scheduled task to take effect.');
 }
 
 async function initConfig() {

@@ -14,12 +14,15 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 4. Answer the prompts.
 5. Profit!
 
+Please note that you need to restart your pc before the wallpaper will change automatically.
+
 # Usage
-After running the install script your wallpaper will be changed at the interval you specified. (And when you logon)
+After running the install script and restarting your wallpaper will be changed at the interval you specified. (And when you logon)
 
 Additionally there are also some actions you can perform manually by right-clicking your desktop.
 These actions include:
 - "Next Wallpaper" - changes the wallpaper
+- "Previous Wallpaper" - changes the wallpaper to the previous wallpaper
 - "Show Current Wallpaper" - opens explorer and highlights the currently applied wallpaper.
 
 # Uninstall
