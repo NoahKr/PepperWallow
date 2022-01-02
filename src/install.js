@@ -107,6 +107,7 @@ async function initRegistry() {
     }
 
     Registry.createAndInstall('next-wallpaper', 'Next Wallpaper');
+    Registry.createAndInstall('previous-wallpaper', 'Previous Wallpaper');
     Registry.createAndInstall('show-current', 'Show Current Wallpaper');
     console.log('Registry keys set!')
 }

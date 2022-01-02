@@ -37,6 +37,7 @@ function installRegistry(action) {
 
 export function uninstall() {
     uninstallRegistry('next-wallpaper');
+    uninstallRegistry('previous-wallpaper');
     uninstallRegistry('show-current');
 }
 

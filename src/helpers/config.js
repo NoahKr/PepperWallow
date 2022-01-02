@@ -38,9 +38,7 @@ export function usedWallpapers() {
 export function shiftNextWallpaper() {
     const config = get();
 
-    console.log('nextWallpapers', config.nextWallpapers);
     const next = config.nextWallpapers.shift();
-    console.log('next', next);
     update(config);
 
     return next;
