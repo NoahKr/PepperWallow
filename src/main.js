@@ -15,6 +15,9 @@ async function main() {
             case "show-current":
                 await Wallpaper.showCurrent(source);
                 break;
+            case "previous-wallpaper":
+                await Wallpaper.previous(source);
+                break;
             default:
                 console.log(`Supplied action ${action} is not a valid action.`)
         }

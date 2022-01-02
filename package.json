@@ -15,6 +15,7 @@
     "pep-uninstall": "node src/uninstall.js",
     "next-wallpaper": "node src/main.js next-wallpaper",
     "show-current": "node src/main.js show-current",
+    "previous-wallpaper": "node src/main.js previous-wallpaper",
     "clear-log": "rm .log"
   },
   "repository": {

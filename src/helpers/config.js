@@ -1,7 +1,7 @@
 import * as Installation from './installation.js';
 
 export function set(wallpaperPath, changeInterval, usedWallpapers = []) {
-    Installation.storeConfig(JSON.stringify({wallpaperPath, changeInterval, usedWallpapers}));
+    Installation.storeConfig(JSON.stringify({wallpaperPath, changeInterval, usedWallpapers, nextWallpapers: []}));
 }
 
 function update(newConfig) {
@@ -15,7 +15,8 @@ function get() {
         return {
             wallpaperPath: null,
             changeInterval: null,
-            usedWallpapers: null
+            usedWallpapers: [],
+            nextWallpapers: []
         }
     }
 
@@ -34,10 +35,32 @@ export function usedWallpapers() {
     return get().usedWallpapers;
 }
 
+export function shiftNextWallpaper() {
+    const config = get();
+
+    console.log('nextWallpapers', config.nextWallpapers);
+    const next = config.nextWallpapers.shift();
+    console.log('next', next);
+    update(config);
+
+    return next;
+}
+
+
 export function updateUsedWallpapers(usedWallpaper) {
     const config = get();
 
-    config.usedWallpapers.push(usedWallpaper);
+    // Only update if not already set.
+    if (config.usedWallpapers.indexOf(usedWallpaper) === -1) {
+        config.usedWallpapers.push(usedWallpaper);
+        update(config);
+    }
+}
+
+export function addNextWallpaper(usedWallpaper) {
+    const config = get();
+
+    config.nextWallpapers.unshift(usedWallpaper);
     update(config);
 }
 
