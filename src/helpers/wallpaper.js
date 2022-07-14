@@ -4,6 +4,8 @@ import fs from 'fs';
 import _ from 'lodash';
 import {log} from "./log.js";
 import childProcess from 'child_process';
+import {setWallpaperChangedAt} from "./config.js";
+import * as Scheduler from "./scheduler.js";
 
 async function current() {
     return await getWallpaper();
@@ -21,13 +23,32 @@ export async function showCurrent(source) {
     log(`shown current wallpaper (${path})`, source);
 }
 
-export async function next(source) {
+export async function next(source, force = false) {
     // TODO check if there is a nextStack
+
+    const now = Date.now();
+
+    // Registry action ignore these time checks. Unless force is given (so boot will always change wallpaper)
+    if (source !== 'registry' && !force) {
+        if (Config.wallpaperChangedAt()) {
+            // 1 minute leniancy
+            const canSetWallpaperFrom = Config.wallpaperChangedAt() + (Config.changeInterval()*60*1000) - 60;
+
+            if (now > canSetWallpaperFrom) {
+                log(`next wallpaper action skipped, wallpaper last set at: ${Config.wallpaperChangedAt()}. Can be set again at ${canSetWallpaperFrom}`, source);
+                return;
+            }
+            // else wallpaper has been set longer ago then the designated time.
+        }
+        // else wallpaper has never been set. Free to set
+    }
 
     const [path, fileName] = resolveNextWallpaper(source);
 
     await setWallpaper(path);
     Config.updateUsedWallpapers(fileName);
+    Config.setWallpaperChangedAt(now);
+    Scheduler.setTimelyTask(now);
 
     log(`set to next wallpaper: ${fileName}`, source);
 }
@@ -66,6 +87,8 @@ function listDirectory() {
 }
 
 export async function previous(source) {
+    const now = Date.now();
+
     const currentPath = await current();
     const currentFileName = resolveFileNameFromPath(currentPath);
 
@@ -77,6 +100,9 @@ export async function previous(source) {
 
     await setWallpaper(previousPath);
     Config.addNextWallpaper(currentFileName);
+    Config.setWallpaperChangedAt();
+    Scheduler.setTimelyTask(now);
+
     log(`set to previous wallpaper: ${fileName}`, source);
 }
 

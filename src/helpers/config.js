@@ -16,7 +16,8 @@ function get() {
             wallpaperPath: null,
             changeInterval: null,
             usedWallpapers: [],
-            nextWallpapers: []
+            nextWallpapers: [],
+            wallpaperChangedAt: null
         }
     }
 
@@ -33,6 +34,10 @@ export function changeInterval() {
 
 export function usedWallpapers() {
     return get().usedWallpapers;
+}
+
+export function wallpaperChangedAt() {
+    return get().wallpaperChangedAt;
 }
 
 export function shiftNextWallpaper() {
@@ -61,6 +66,14 @@ export function addNextWallpaper(usedWallpaper) {
     config.nextWallpapers.unshift(usedWallpaper);
     update(config);
 }
+
+export function setWallpaperChangedAt(timestamp) {
+    const config = get();
+
+    config.wallpaperChangedAt = timestamp;
+    update(config);
+}
+
 
 export function clearUsedWallpapers() {
     const config = get();

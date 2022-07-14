@@ -9,6 +9,9 @@ async function main() {
         source = args[1];
 
         switch (action) {
+            case "boot":
+                await Wallpaper.next(source, true);
+                break;
             case "next-wallpaper":
                 await Wallpaper.next(source);
                 break;

@@ -5,7 +5,7 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 (Please note that this is a hobby project and is by no means perfect. Code could be cleaner for one thing...)
 
 # Pre-requisites
-- [Node](https://nodejs.org/en/download/) (Tested on Node 14)
+- [Node](https://nodejs.org/en/download/) (Tested on Node 14, 16.16.0)
 
 # Install
 1. Clone the project
