@@ -3,4 +3,4 @@
 %~d0
 :: change to correct directory (running as admin resets working dir)
 cd %~dp0
-npm run pep-uninstall
+npm run --no-deprecation pep-uninstall

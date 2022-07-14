@@ -27,7 +27,7 @@ function createScheduledTaskXML(xmlName, action, commandParams = {}) {
     let content = templateContent
         .replace('~~COMMAND~~', command)
         .replace('~~ARGUMENTS~~', arg)
-        .replace('~~USERID~~', getWindowsUserID());
+        .replaceAll('~~USERID~~', getWindowsUserID());
 
     for (const replacementKey in commandParams) {
         content = content.replace(replacementKey, commandParams[replacementKey])
@@ -48,11 +48,7 @@ function installScheduledTask(type, changeAtTimestamp = null) {
     if ('BOOT' === type) {
         createScheduledTaskXML(xmlName,'boot');
     } else {
-        console.log('timestamp', changeAtTimestamp)
-        // 2022-07-14T11:05:00.3764333
-        const changeAt = moment.unix(changeAtTimestamp).format("YYYY-MM-DDTHH:mm:ss.SSS000");
-        console.log('formatted changeAt', changeAt);
-
+        const changeAt = moment.unix(Math.round(changeAtTimestamp/1000)).format("YYYY-MM-DDTHH:mm:ss.SSS000");
         createScheduledTaskXML(xmlName,'next-wallpaper', {
             '~~DATETIME~~': changeAt,
         });
@@ -65,7 +61,8 @@ function installScheduledTask(type, changeAtTimestamp = null) {
 }
 
 export function uninstall() {
-    remove('PepperWallow');
+    remove('PepperWallow-BOOT');
+    remove('PepperWallow-TIMELY');
 }
 
 function remove(taskName, ignoreOnError) {
