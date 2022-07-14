@@ -5,26 +5,9 @@ const installationPath = '.installation';
 const binariesPath = `${installationPath}/bin`;
 const configPath = `${installationPath}`;
 
-const externalBinariesPath = '../bin';
-
 export function createActionCmd(action, source) {
     const currentDir = getCurrentDirPath();
     const fileContent = `"C:\\Program Files\\nodejs\\npm.cmd" run ${action} --prefix "${currentDir}" -- ${source}`;
-
-    const posixPath = setBinary(`run-${source}-${action}.cmd`, fileContent);
-    return posixPath.replace(/\//g, '\\');
-}
-
-export function createScheduledTaskXML(action, source) {
-    const currentDir = getCurrentDirPath();
-
-    return fs.readFileSync(filePath, 'utf-8');
-
-    // TODO read content from file,
-    //  replace stuff
-    //  set into file.
-
-    fs.copyPath(`${externalBinariesPath}/PepperWallow.xml`, `${binariesPath}/PepperWallow.xml`);
 
     const posixPath = setBinary(`run-${source}-${action}.cmd`, fileContent);
     return posixPath.replace(/\//g, '\\');

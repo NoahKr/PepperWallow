@@ -24,14 +24,12 @@ export async function showCurrent(source) {
 }
 
 export async function next(source, force = false) {
-    // TODO check if there is a nextStack
-
     const now = Date.now();
 
     // Registry action ignore these time checks. Unless force is given (so boot will always change wallpaper)
     if (source !== 'registry' && !force) {
         if (Config.wallpaperChangedAt()) {
-            // 1 minute leniancy
+            // 1 minute leniency
             const canSetWallpaperFrom = Config.wallpaperChangedAt() + (Config.changeInterval()*60*1000) - 60;
 
             if (now > canSetWallpaperFrom) {
