@@ -34,8 +34,8 @@ export async function next(source, force = false) {
             const changeIntervalInMicroSeconds = Config.changeInterval()*60*1000;
             const canSetWallpaperFrom = Config.wallpaperChangedAt() + changeIntervalInMicroSeconds - leniancy;
 
-            if (now > canSetWallpaperFrom) {
-                log(`next wallpaper action skipped, wallpaper last set at: ${Config.wallpaperChangedAt()}. Can be set again at ${canSetWallpaperFrom}`, source);
+            if (now < canSetWallpaperFrom) {
+                log(`next wallpaper action skipped. Now: ${now}. Wallpaper last set at: ${Config.wallpaperChangedAt()}. Can be set again at ${canSetWallpaperFrom}`, source);
                 return;
             }
             // else wallpaper has been set longer ago then the designated time.
