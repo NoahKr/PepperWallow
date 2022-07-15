@@ -30,7 +30,9 @@ export async function next(source, force = false) {
     if (source !== 'registry' && !force) {
         if (Config.wallpaperChangedAt()) {
             // 1 minute leniency
-            const canSetWallpaperFrom = Config.wallpaperChangedAt() + (Config.changeInterval()*60*1000) - 60;
+            const leniancy = 60*1000
+            const changeIntervalInMicroSeconds = Config.changeInterval()*60*1000;
+            const canSetWallpaperFrom = Config.wallpaperChangedAt() + changeIntervalInMicroSeconds - leniancy;
 
             if (now > canSetWallpaperFrom) {
                 log(`next wallpaper action skipped, wallpaper last set at: ${Config.wallpaperChangedAt()}. Can be set again at ${canSetWallpaperFrom}`, source);
