@@ -10,7 +10,8 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 # Install
 1. Clone the project
 2. Open the directory in explorer
-3. Double-click the install.cmd in the root of the project.
+# TODO noah (add npm install to the install cmd)
+3. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
 4. Answer the prompts.
 5. Profit!
 
