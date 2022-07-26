@@ -9,11 +9,11 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 
 # Install
 1. Clone the project
-2. Open the directory in explorer
-#### TODO noah (add npm install to the install cmd)
-3. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
-4. Answer the prompts.
-5. Profit!
+2. Open the directory in the terminal of your choice and run `npm install`.
+3. Open the directory in explorer
+4. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
+5. Answer the prompts.
+6. Profit!
 
 Please note that you need to restart your pc before the wallpaper will change automatically.
 
