@@ -25,6 +25,10 @@ export function setBinary(name, content, encoding = 'utf8') {
     return setFileContent(binariesPath, name, content, encoding);
 }
 
+export function removeBinary(name) {
+    return removeFile(binariesPath, name)
+}
+
 export function getBinaryPath(fileName, winFormat = false) {
     const currentDirPath = getCurrentDirPath();
     const path =  `${currentDirPath}/${binariesPath}/${fileName}`
@@ -47,6 +51,16 @@ function setFileContent(dirPath, fileName, content, encoding = 'utf8') {
 
     const currentDirPath = getCurrentDirPath();
     return `${currentDirPath}/${resolvedPath}`;
+}
+
+function removeFile(dirPath, fileName) {
+    ensureDirExists(dirPath);
+    const resolvedPath = `${dirPath}/${fileName}`;
+
+    fs.unlinkSync(resolvedPath);
+
+    const currentDirPath = getCurrentDirPath();
+    return `${currentDirPath}/${resolvedPath}`
 }
 
 function getFileContent(dirPath, fileName) {

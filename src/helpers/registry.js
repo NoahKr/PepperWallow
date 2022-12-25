@@ -39,6 +39,7 @@ export function uninstall() {
     uninstallRegistry('next-wallpaper');
     uninstallRegistry('previous-wallpaper');
     uninstallRegistry('show-current');
+    uninstallRegistry('toggle-freeze');
 }
 
 function uninstallRegistry(action) {

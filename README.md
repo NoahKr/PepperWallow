@@ -9,11 +9,9 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 
 # Install
 1. Clone the project
-2. Open the directory in the terminal of your choice and run `npm install`.
-3. Open the directory in explorer
-4. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
-5. Answer the prompts.
-6. Profit!
+2. Open the directory in explorer
+3. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
+4. Profit!
 
 Please note that you need to restart your pc before the wallpaper will change automatically.
 
@@ -25,10 +23,12 @@ These actions include:
 - "Next Wallpaper" - changes the wallpaper
 - "Previous Wallpaper" - changes the wallpaper to the previous wallpaper
 - "Show Current Wallpaper" - opens explorer and highlights the currently applied wallpaper.
+- "Freeze / Unfreeze" - freezing makes it so your wallpapers do not change, even if any other trigger conditions (like boot or interval) are met. Once you unfreeze the wallpaper will be changed (if the interval condition has been met. It does not check if the boot condition was ever met)
 
 # Uninstall
-1. Double-click the uninstall.cmd in the root of the project.
-2. Delete this directory
+1. Open the directory in explorer
+2. Double-click the uninstall.cmd in the root of the project.
+3. Delete this directory
 
 # Credits
 Salt-shaker icons made by https://www.freepik.com via https://www.flaticon.com/

@@ -13,14 +13,13 @@ async function main() {
         return;
     }
 
-    Scheduler.uninstall();
+    Scheduler.uninstall('cmd-file');
     Registry.uninstall();
     Installation.uninstall();
 
     log(`application uninstalled`, 'cmd-file');
     console.log('Uninstall complete. You can now safely close this console and remove the directory');
 }
-
 
 
 main();

@@ -3,5 +3,5 @@
 %~d0
 :: change to correct directory (running as admin resets working dir)
 cd %~dp0
+call npm install
 npm run pep-install
-pause

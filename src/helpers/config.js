@@ -1,7 +1,30 @@
 import * as Installation from './installation.js';
 
-export function set(wallpaperPath, changeInterval, usedWallpapers = []) {
-    Installation.storeConfig(JSON.stringify({wallpaperPath, changeInterval, usedWallpapers, nextWallpapers: []}));
+export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false) {
+
+    // TODO do not clear used and next wallpapers
+    const usedWallpapersVal = usedWallpapers();
+    const nextWallpapersVal = nextWallpapers();
+    const wallpaperChangedAtVal = wallpaperChangedAt();
+    let frozenVal = isFrozen();
+
+    // Else you can get stuck ;p
+    if (!registryFreeze) {
+        frozenVal = false;
+    }
+
+    Installation.storeConfig(JSON.stringify({
+        wallpaperPath,
+        changeInterval,
+        registryNextPrev,
+        registryShowCurrent,
+        registryFreeze,
+        notifications,
+        usedWallpapers: usedWallpapersVal,
+        nextWallpapers: nextWallpapersVal,
+        wallpaperChangedAt: wallpaperChangedAtVal,
+        frozen: frozenVal
+    }));
 }
 
 function update(newConfig) {
@@ -15,9 +38,14 @@ function get() {
         return {
             wallpaperPath: null,
             changeInterval: null,
+            registryNextPrev: false,
+            registryShowCurrent: false,
+            registryFreeze: false,
+            notifications: false,
             usedWallpapers: [],
             nextWallpapers: [],
-            wallpaperChangedAt: null
+            wallpaperChangedAt: null,
+            frozen: false
         }
     }
 
@@ -32,12 +60,36 @@ export function changeInterval() {
     return get().changeInterval
 }
 
+export function registryNextPrev() {
+    return get().registryNextPrev
+}
+
+export function registryShowCurrent() {
+    return get().registryShowCurrent
+}
+
+export function registryFreeze() {
+    return get().registryFreeze
+}
+
+export function notifications() {
+    return get().notifications
+}
+
 export function usedWallpapers() {
     return get().usedWallpapers;
 }
 
+export function nextWallpapers() {
+    return get().nextWallpapers;
+}
+
 export function wallpaperChangedAt() {
     return get().wallpaperChangedAt;
+}
+
+export function isFrozen() {
+    return get().frozen;
 }
 
 export function shiftNextWallpaper() {
@@ -79,5 +131,12 @@ export function clearUsedWallpapers() {
     const config = get();
 
     config.usedWallpapers = [];
+    update(config);
+}
+
+export function setFrozen(frozen) {
+    const config = get();
+
+    config.frozen = frozen;
     update(config);
 }

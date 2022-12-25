@@ -4,20 +4,22 @@
   "description": "",
   "main": "src/main.js",
   "dependencies": {
+    "@nodegui/nodegui": "^0.57.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
+    "node-notifier": "^10.0.1",
     "upath": "^2.0.1",
     "wallpaper": "^6.0.0"
   },
   "type": "module",
   "scripts": {
-    "pep-install": "node src/install.js",
+    "pep-install": "npx qode src/installGUI.js",
     "pep-uninstall": "node src/uninstall.js",
-
     "boot": "node src/main.js boot",
     "next-wallpaper": "node src/main.js next-wallpaper",
     "show-current": "node src/main.js show-current",
     "previous-wallpaper": "node src/main.js previous-wallpaper",
+    "toggle-freeze": "node src/main.js toggle-freeze",
     "clear-log": "rm .log"
   },
   "repository": {
