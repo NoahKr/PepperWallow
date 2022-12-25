@@ -26,6 +26,7 @@ let settings = {
   registryNextPrev: false,
   registryShowCurrent: false,
   registryFreeze: false,
+  notifications: false,
 };
 
 function main() {
@@ -48,6 +49,7 @@ function loadCurrentConfig() {
     settings.registryNextPrev = Config.registryNextPrev();
     settings.registryShowCurrent = Config.registryShowCurrent();
     settings.registryFreeze = Config.registryFreeze();
+    settings.notifications = Config.notifications();
 }
 
 function buildWindow() {
@@ -193,9 +195,17 @@ function buildBasicSection(rootLayout) {
     intervalLayout.addWidget(intervalNumberField);
     intervalLayout.addWidget(intervalLabel2);
 
+    const showNotificationsCheckbox = new QCheckBox();
+    showNotificationsCheckbox.setText("Show notifications (on wallpaper change, freeze, error, etc.)");
+    showNotificationsCheckbox.addEventListener('clicked', (checked) => {
+        settings.notifications = checked;
+    });
+    showNotificationsCheckbox.setChecked(settings.notifications);
+
     rootLayout.addWidget(selectDirRow);
     rootLayout.addWidget(checkbox);
     rootLayout.addWidget(intervalRow);
+    rootLayout.addWidget(showNotificationsCheckbox);
 
     return rootLayout;
 }
@@ -321,7 +331,7 @@ function save() {
     Registry.uninstall();
 
     const interval = settings.intervalChecked ? settings.interval : null;
-    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze);
+    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze, settings.notifications);
     Scheduler.install('cmd-file'); // Only installs boot by default. Interval is installed when wallpaper is first changed
 
     const now = Date.now();

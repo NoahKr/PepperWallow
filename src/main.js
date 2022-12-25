@@ -30,13 +30,13 @@ async function main() {
         }
 
         // Small delay in exit to give enough time to display notification
-        setTimeout(() => process.exit(0), 5000)
+        // setTimeout(() => process.exit(0), 5000)
     } catch (e) {
         logError(e, source);
         Notification.notify(source, "PepperWallow encountered an error, see log for more details", true)
 
         // Small delay in exit to give enough time to display notification
-        setTimeout(() => process.exit(0), 5000)
+        // setTimeout(() => process.exit(0), 5000)
     }
 
 }

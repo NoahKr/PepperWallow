@@ -75,7 +75,6 @@ function remove(source, taskName) {
     try {
         childProcess.execSync(`schtasks /delete /tn ${taskName} /f >NUL 2>&1`);
     } catch (e) {
-        log(e, source)
         // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
     }
 }

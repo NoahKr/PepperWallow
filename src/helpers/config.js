@@ -1,6 +1,6 @@
 import * as Installation from './installation.js';
 
-export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false) {
+export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false) {
 
     // TODO do not clear used and next wallpapers
     const usedWallpapersVal = usedWallpapers();
@@ -19,6 +19,7 @@ export function set(wallpaperPath, changeInterval = null, registryNextPrev = fal
         registryNextPrev,
         registryShowCurrent,
         registryFreeze,
+        notifications,
         usedWallpapers: usedWallpapersVal,
         nextWallpapers: nextWallpapersVal,
         wallpaperChangedAt: wallpaperChangedAtVal,
@@ -40,6 +41,7 @@ function get() {
             registryNextPrev: false,
             registryShowCurrent: false,
             registryFreeze: false,
+            notifications: false,
             usedWallpapers: [],
             nextWallpapers: [],
             wallpaperChangedAt: null,
@@ -68,6 +70,10 @@ export function registryShowCurrent() {
 
 export function registryFreeze() {
     return get().registryFreeze
+}
+
+export function notifications() {
+    return get().notifications
 }
 
 export function usedWallpapers() {
