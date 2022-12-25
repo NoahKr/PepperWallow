@@ -27,11 +27,12 @@ export async function next(source, force = false) {
     const now = Date.now();
 
     // Registry action ignore these time checks. Unless force is given (so boot will always change wallpaper)
-    if (source !== 'registry' && !force) {
+    const interval = Config.changeInterval();
+    if (source !== 'registry' && !force && interval) {
         if (Config.wallpaperChangedAt()) {
             // 1 minute leniency
             const leniancy = 60*1000
-            const changeIntervalInMicroSeconds = Config.changeInterval()*60*1000;
+            const changeIntervalInMicroSeconds = interval*60*1000;
             const canSetWallpaperFrom = Config.wallpaperChangedAt() + changeIntervalInMicroSeconds - leniancy;
 
             if (now < canSetWallpaperFrom) {

@@ -1,21 +1,20 @@
 import {
-    QMainWindow,
-    QWidget,
-    QLabel,
-    FlexLayout,
-    FileMode,
-    QPushButton,
-    QCheckBox,
-    QMessageBox,
     ButtonRole,
+    FileMode,
+    FlexLayout,
+    QCheckBox,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+    QPushButton,
     QSpinBox,
+    QWidget,
     WidgetEventTypes
 } from "@nodegui/nodegui";
-import { QFileDialog } from "@nodegui/nodegui";
 import * as Config from "./helpers/config.js";
 import * as Scheduler from "./helpers/scheduler.js";
 import * as Registry from "./helpers/registry.js";
-import * as Installation from "./helpers/installation.js";
 import _ from "lodash";
 
 
@@ -36,7 +35,6 @@ function loadCurrentConfig() {
     settings.wallpaperDir = Config.wallpaperPath();
     settings.interval = Config.changeInterval();
 
-    console.log('settings.interval', settings.interval);
     if (settings.interval) {
         settings.intervalChecked = true;
     } else {
@@ -307,6 +305,11 @@ function save() {
     const interval = settings.intervalChecked ? settings.interval : null;
     Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent);
     Scheduler.install(); // Only installs boot by default. Interval is installed when wallpaper is first changed
+
+    // If change interval selected add first scheduled task right now
+    if (interval) {
+        Scheduler.setTimelyTask(Date.now());
+    }
 
     if (settings.registryNextPrev) {
         Registry.createAndInstall('next-wallpaper', 'Next Wallpaper');

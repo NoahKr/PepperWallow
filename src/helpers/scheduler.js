@@ -13,6 +13,11 @@ export function install() {
 
 export function setTimelyTask(timestamp) {
     const interval = Config.changeInterval();
+    // If interval is empty, then no timely task should be set
+    if (!interval) {
+        return;
+    }
+
     const changeAtTimestamp = timestamp + (interval*60*1000)
 
     installScheduledTask('TIMELY', changeAtTimestamp)
