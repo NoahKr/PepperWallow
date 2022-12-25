@@ -1,3 +1,8 @@
+# 1.0.0
+- Added: GUI installer which includes more configurability
+- Added: freeze / unfreeze registry function
+- Added: desktop notifications
+
 # 0.2.0
 - Added: `previous wallpaper` action that sets the wallpaper to the wallpaper before the current one.
 When the wallpaper is then changed later on the original current wallpaper will be set again.
