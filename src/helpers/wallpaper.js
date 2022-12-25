@@ -34,6 +34,12 @@ export async function next(source, force = false, unfreeze = false) {
 
     // Registry action ignore these time checks. Unless force is given (so boot will always change wallpaper)
     const interval = Config.changeInterval();
+
+    // Do not change wallpaper on unfreeze if it's only changed at boot
+    if (unfreeze && !interval) {
+        return;
+    }
+
     if (unfreeze || (source !== 'registry' && !force && interval)) {
         if (Config.wallpaperChangedAt()) {
 
