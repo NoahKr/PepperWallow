@@ -6,6 +6,7 @@ import {log} from "./log.js";
 import childProcess from 'child_process';
 import {setWallpaperChangedAt} from "./config.js";
 import * as Scheduler from "./scheduler.js";
+import * as Registry from "./registry.js";
 
 async function current() {
     return await getWallpaper();
@@ -23,33 +24,67 @@ export async function showCurrent(source) {
     log(`shown current wallpaper (${path})`, source);
 }
 
-export async function next(source, force = false) {
+export async function next(source, force = false, unfreeze = false) {
     const now = Date.now();
+
+    console.log('1');
+    if (Config.isFrozen() && source !== 'registry') {
+        console.log('2');
+        log(`next wallpaper action skipped. Wallpapers are frozen. Unfreeze to change wallpaper`, source);
+        return;
+    }
+    console.log('3');
 
     // Registry action ignore these time checks. Unless force is given (so boot will always change wallpaper)
     const interval = Config.changeInterval();
-    if (source !== 'registry' && !force && interval) {
+    if (unfreeze || (source !== 'registry' && !force && interval)) {
+        console.log('3-1');
         if (Config.wallpaperChangedAt()) {
-            // 1 minute leniency
-            const leniancy = 60*1000
-            const changeIntervalInMicroSeconds = interval*60*1000;
-            const canSetWallpaperFrom = Config.wallpaperChangedAt() + changeIntervalInMicroSeconds - leniancy;
+
+
+            console.log('3-2');
+
+            // 1 minute leniency if via shtasks
+            let leniancy = 0
+            if (source !== 'registry') {
+                console.log('leniancy applied');
+                leniancy = 60*1000
+            }
+
+            const changeIntervalInMilliSeconds = interval*60*1000;
+            const canSetWallpaperFrom = Config.wallpaperChangedAt() + changeIntervalInMilliSeconds - leniancy;
+
+            console.log('Config.wallpaperChangedAt()', Config.wallpaperChangedAt());
+            console.log('changeIntervalInMicroSeconds', changeIntervalInMilliSeconds);
+
+            console.log('3-3', now, canSetWallpaperFrom);
+            console.log('3-3, time left till next (ms)', canSetWallpaperFrom - now);
+            console.log('3-3, time left till next (sec)', (canSetWallpaperFrom - now)/1000);
 
             if (now < canSetWallpaperFrom) {
+                console.log('3-4 skipped');
                 log(`next wallpaper action skipped. Now: ${now}. Wallpaper last set at: ${Config.wallpaperChangedAt()}. Can be set again at ${canSetWallpaperFrom}`, source);
                 return;
             }
+            console.log('3-4 NOT skipped');
             // else wallpaper has been set longer ago then the designated time.
         }
         // else wallpaper has never been set. Free to set
     }
+    console.log('4');
 
     const [path, fileName] = resolveNextWallpaper(source);
 
+    console.log('path', path);
+    console.log('5');
     await setWallpaper(path);
+    console.log('6');
     Config.updateUsedWallpapers(fileName);
+    console.log('7');
     Config.setWallpaperChangedAt(now);
+    console.log('8');
     Scheduler.setTimelyTask(now);
+    console.log('9');
 
     log(`set to next wallpaper: ${fileName}`, source);
 }
@@ -134,4 +169,22 @@ function resolvePathFromFileName(fileName) {
     const basePath = Config.wallpaperPath();
     return `${basePath}\\${fileName}`;
 }
+
+export async function toggleFreeze(source) {
+    const wasFrozen = Config.isFrozen();
+    console.log('was frozen:', wasFrozen)
+    const newFrozen = !wasFrozen
+    Config.setFrozen(newFrozen);
+    console.log('new frozen:', newFrozen)
+
+    if (newFrozen) {
+        Registry.createAndInstall('toggle-freeze', 'Unfreeze');
+        log(`Froze wallpapers`, source);
+    } else {
+        Registry.createAndInstall('toggle-freeze', 'Freeze');
+        log(`Unfroze wallpapers - attempting to set next wallpaper`, source);
+        await next(source, false, true);
+    }
+}
+
 

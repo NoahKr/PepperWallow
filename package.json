@@ -18,6 +18,7 @@
     "next-wallpaper": "node src/main.js next-wallpaper",
     "show-current": "node src/main.js show-current",
     "previous-wallpaper": "node src/main.js previous-wallpaper",
+    "toggle-freeze": "node src/main.js toggle-freeze",
     "clear-log": "rm .log"
   },
   "repository": {

@@ -5,8 +5,20 @@ export function set(wallpaperPath, changeInterval = null, registryNextPrev = fal
     // TODO do not clear used and next wallpapers
     const usedWallpapersVal = usedWallpapers();
     const nextWallpapersVal = nextWallpapers();
+    const wallpaperChangedAtVal = wallpaperChangedAt();
+    const frozenVal = isFrozen();
 
-    Installation.storeConfig(JSON.stringify({wallpaperPath, changeInterval, registryNextPrev, registryShowCurrent, registryFreeze, usedWallpapers: usedWallpapersVal, nextWallpapers: nextWallpapersVal}));
+    Installation.storeConfig(JSON.stringify({
+        wallpaperPath,
+        changeInterval,
+        registryNextPrev,
+        registryShowCurrent,
+        registryFreeze,
+        usedWallpapers: usedWallpapersVal,
+        nextWallpapers: nextWallpapersVal,
+        wallpaperChangedAt: wallpaperChangedAtVal,
+        frozen: frozenVal
+    }));
 }
 
 function update(newConfig) {
@@ -25,7 +37,8 @@ function get() {
             registryFreeze: false,
             usedWallpapers: [],
             nextWallpapers: [],
-            wallpaperChangedAt: null
+            wallpaperChangedAt: null,
+            frozen: false
         }
     }
 
@@ -62,6 +75,10 @@ export function nextWallpapers() {
 
 export function wallpaperChangedAt() {
     return get().wallpaperChangedAt;
+}
+
+export function isFrozen() {
+    return get().frozen;
 }
 
 export function shiftNextWallpaper() {
@@ -103,5 +120,12 @@ export function clearUsedWallpapers() {
     const config = get();
 
     config.usedWallpapers = [];
+    update(config);
+}
+
+export function setFrozen(frozen) {
+    const config = get();
+
+    config.frozen = frozen;
     update(config);
 }

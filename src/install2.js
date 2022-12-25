@@ -16,6 +16,7 @@ import * as Config from "./helpers/config.js";
 import * as Scheduler from "./helpers/scheduler.js";
 import * as Registry from "./helpers/registry.js";
 import _ from "lodash";
+import {log} from "./helpers/log.js";
 
 
 let settings = {
@@ -28,6 +29,8 @@ let settings = {
 };
 
 function main() {
+    log(`configuration opened`, 'cmd-file');
+
     loadCurrentConfig();
     global.win = buildWindow();
 }
@@ -111,7 +114,9 @@ function buildRootLayout(rootLayout) {
     const cancelButton = new QPushButton();
     cancelButton.setText('Cancel');
     cancelButton.setObjectName('cancelButton');
-    cancelButton.addEventListener('clicked', () => process.exit(0))
+    cancelButton.addEventListener('clicked', () => {
+        process.exit(0)
+    })
 
     const saveButton = new QPushButton();
     saveButton.setText('Save');
@@ -290,13 +295,16 @@ function addSpacer(layout, space = 15) {
     return layout;
 }
 
-function showAlert(text) {
+function showAlert(text, cb) {
     const messageBox = new QMessageBox();
     messageBox.setText(text);
     messageBox.setWindowTitle('Warning');
 
     const accept = new QPushButton();
     accept.setText('Dismiss');
+    if (cb) {
+        accept.addEventListener('clicked', () => cb());
+    }
 
     messageBox.addButton(accept, ButtonRole.AcceptRole);
     messageBox.exec();
@@ -313,12 +321,16 @@ function save() {
     Registry.uninstall();
 
     const interval = settings.intervalChecked ? settings.interval : null;
-    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent);
+    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze);
     Scheduler.install(); // Only installs boot by default. Interval is installed when wallpaper is first changed
 
+    const now = Date.now();
+    let changeWallpaperAt = 'boot'
     // If change interval selected add first scheduled task right now
     if (interval) {
-        Scheduler.setTimelyTask(Date.now());
+        const date = new Date(now + interval)
+        changeWallpaperAt = date.getHours() + ":" + date.getMinutes();
+        Scheduler.setTimelyTask(now);
     }
 
     if (settings.registryNextPrev) {
@@ -331,10 +343,15 @@ function save() {
 
     // TODO check if currently frozen
     if (settings.registryFreeze) {
-        Registry.createAndInstall('freeze', 'Freeze');
+        if (Config.isFrozen()) {
+            Registry.createAndInstall('toggle-freeze', 'Unfreeze');
+        } else {
+            Registry.createAndInstall('toggle-freeze', 'Freeze');
+        }
     }
 
-    process.exit(0);
+    log(`application installed/configured, settings: ${JSON.stringify(settings)}`, 'cmd-file');
+    showAlert(`Settings saved! Next wallpaper change will happen at ${changeWallpaperAt}`, () => process.exit(0))
 }
 
 function validate() {

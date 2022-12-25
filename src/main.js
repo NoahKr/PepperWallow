@@ -21,9 +21,14 @@ async function main() {
             case "previous-wallpaper":
                 await Wallpaper.previous(source);
                 break;
+            case "toggle-freeze":
+                await Wallpaper.toggleFreeze(source);
+                break;
             default:
                 console.log(`Supplied action ${action} is not a valid action.`)
         }
+
+        process.exit(0);
     } catch (e) {
         logError(e, source);
     }
