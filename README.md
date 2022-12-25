@@ -8,10 +8,11 @@ The applied wallpapers are shuffled which means that you won't see the same wall
 - [Node](https://nodejs.org/en/download/) (Tested on Node 14, 16.16.0)
 
 # Install
-1. Clone the project
+1. Clone the project / Or download zip
 2. Open the directory in explorer
 3. Double-click the install.cmd in the root of the project. (make sure to actually run this from a directory, it won't work if you try this in the zip-viewer)
-4. Profit!
+4. (Important that the pepperwallow directory is never renamed/moved, just like most program files apps, if the directory is moved without warning it will fail)
+5. Profit!
 
 Please note that you need to restart your pc before the wallpaper will change automatically.
 
