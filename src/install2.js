@@ -24,6 +24,7 @@ let settings = {
   interval: 1,
   registryNextPrev: false,
   registryShowCurrent: false,
+  registryFreeze: false,
 };
 
 function main() {
@@ -43,6 +44,7 @@ function loadCurrentConfig() {
 
     settings.registryNextPrev = Config.registryNextPrev();
     settings.registryShowCurrent = Config.registryShowCurrent();
+    settings.registryFreeze = Config.registryFreeze();
 }
 
 function buildWindow() {
@@ -247,8 +249,16 @@ function buildRegistrySection(rootLayout) {
     });
     showCurrentCheckbox.setChecked(settings.registryShowCurrent);
 
+    const freezeCheckbox = new QCheckBox();
+    freezeCheckbox.setText("Freeze / Unfreeze (beta)");
+    freezeCheckbox.addEventListener('clicked', (checked) => {
+        settings.registryFreeze = checked;
+    });
+    freezeCheckbox.setChecked(settings.registryFreeze);
+
     rootLayout.addWidget(nextPrevCheckbox);
     rootLayout.addWidget(showCurrentCheckbox);
+    rootLayout.addWidget(freezeCheckbox);
     return rootLayout;
 }
 
@@ -319,7 +329,10 @@ function save() {
         Registry.createAndInstall('show-current', 'Show Current Wallpaper');
     }
 
-    // TODO add freeze registry
+    // TODO check if currently frozen
+    if (settings.registryFreeze) {
+        Registry.createAndInstall('freeze', 'Freeze');
+    }
 
     process.exit(0);
 }
