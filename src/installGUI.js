@@ -342,12 +342,12 @@ function save() {
         const date = new Date(now + (interval*60*1000))
 
         let hours = date.getHours();
-        if (hours.length < 2) {
+        if (`${hours}`.length < 2) {
             hours = "0" + hours
         }
 
         let minutes = date.getMinutes();
-        if (minutes.length < 2) {
+        if (`${minutes}`.length < 2) {
             minutes = "0" + minutes
         }
 
