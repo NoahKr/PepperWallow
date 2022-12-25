@@ -19,9 +19,7 @@ export function getCurrentDirPath() {
 }
 
 export function resolveInvisibleCommand(baseCommand, split = false) {
-    const currentDir = getCurrentDirPath();
-    const invisibleVbsPath = `${currentDir}\\bin\\invisible.vbs`.replace(/\\/g, '\\\\\\\\');
-    const commandPath = baseCommand.replace(/\\/g, '\\\\\\\\');
+    const [invisibleVbsPath, commandPath] = parseInvisibleCommand(baseCommand);
 
     const command = 'wscript.exe';
     if (split) {
@@ -30,6 +28,32 @@ export function resolveInvisibleCommand(baseCommand, split = false) {
 
     const fullCommand = `${command} \\"${invisibleVbsPath}\\" \\"${commandPath}\\"`;
     return fullCommand;
+}
+
+function parseInvisibleCommand(baseCommand) {
+    const currentDir = getCurrentDirPath();
+
+    const invisibleVbsPath = escapeForWindowsSubSystem(`${currentDir}\\bin\\invisible.vbs`);
+    const commandPath = escapeForWindowsSubSystem(baseCommand);
+
+    return [invisibleVbsPath, commandPath];
+}
+
+export function resolveElevatedInvisibleCommand(baseCommand) {
+    const [invisibleVbsPath, commandPath] = parseInvisibleCommand(baseCommand);
+    const elevationCommand = escapeForWindowsSubSystem(getHelpBinaryPath('elevate.bat'))
+
+    const fullCommand = `${elevationCommand} wscript.exe ${invisibleVbsPath} ${commandPath}`;
+    return fullCommand;
+}
+
+function escapeForWindowsSubSystem(command) {
+    return command.replace(/\\/g, '\\\\\\\\');
+}
+
+function getHelpBinaryPath(filename) {
+    const currentDir = getCurrentDirPath();
+    return `${currentDir}\\bin\\${filename}`
 }
 
 export function getWindowsUserID() {

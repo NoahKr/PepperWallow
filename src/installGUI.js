@@ -196,7 +196,7 @@ function buildBasicSection(rootLayout) {
     intervalLayout.addWidget(intervalLabel2);
 
     const showNotificationsCheckbox = new QCheckBox();
-    showNotificationsCheckbox.setText("Show notifications (on wallpaper change, freeze, error, etc.)");
+    showNotificationsCheckbox.setText("Show notifications - on wallpaper change, freeze, error, etc. (beta)");
     showNotificationsCheckbox.addEventListener('clicked', (checked) => {
         settings.notifications = checked;
     });
@@ -363,7 +363,6 @@ function save() {
         Registry.createAndInstall('show-current', 'Show Current Wallpaper');
     }
 
-    // TODO check if currently frozen
     if (settings.registryFreeze) {
         if (Config.isFrozen()) {
             Registry.createAndInstall('toggle-freeze', 'Unfreeze');

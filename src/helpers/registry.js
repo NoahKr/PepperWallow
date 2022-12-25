@@ -1,4 +1,8 @@
-import {getCurrentDirPath, resolveInvisibleCommand} from "./utils.js";
+import {
+    getCurrentDirPath,
+    resolveElevatedInvisibleCommand,
+    resolveInvisibleCommand
+} from "./utils.js";
 import childProcess from 'child_process';
 import * as Installation from "./installation.js";
 
@@ -9,7 +13,7 @@ export function createAndInstall(action, text) {
 
 function createRegistryFile(action, text) {
     const actionCmd = Installation.createActionCmd(action, 'registry');
-    const command = resolveInvisibleCommand(actionCmd);
+    const command = resolveElevatedInvisibleCommand(actionCmd);
     const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
 
     // Key is prefixed with 000_ so it appears above other contextMenu items
