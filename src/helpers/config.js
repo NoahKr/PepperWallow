@@ -6,7 +6,12 @@ export function set(wallpaperPath, changeInterval = null, registryNextPrev = fal
     const usedWallpapersVal = usedWallpapers();
     const nextWallpapersVal = nextWallpapers();
     const wallpaperChangedAtVal = wallpaperChangedAt();
-    const frozenVal = isFrozen();
+    let frozenVal = isFrozen();
+
+    // Else you can get stuck ;p
+    if (!registryFreeze) {
+        frozenVal = false;
+    }
 
     Installation.storeConfig(JSON.stringify({
         wallpaperPath,
