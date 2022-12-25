@@ -62,8 +62,26 @@ export async function next(source, force = false, unfreeze = false) {
     Config.setWallpaperChangedAt(now);
     Scheduler.setTimelyTask(source, now);
 
-    log(`set to next wallpaper: ${fileName}`, source);
-    Notification.notify(source, `Set to next wallpaper: ${fileName}`)
+    let nextWallpaperTime = 'boot';
+    if (interval) {
+        const nextWallpaperTimestamp = now + (interval*60*1000);
+        const nextWallpaperDate = new Date(nextWallpaperTimestamp)
+
+        let hours = nextWallpaperDate.getHours();
+        if (`${hours}`.length < 2) {
+            hours = "0" + hours
+        }
+
+        let minutes = nextWallpaperDate.getMinutes();
+        if (`${minutes}`.length < 2) {
+            minutes = "0" + minutes
+        }
+
+        nextWallpaperTime = hours + ":" + minutes;
+    }
+
+    log(`set to next wallpaper: ${fileName} - next change is at ${nextWallpaperTime}`, source);
+    Notification.notify(source, `Set (next) wallpaper: ${fileName} - next change is at ${nextWallpaperTime}`)
 }
 
 function resolveNextWallpaper(source, attempt = 0) {
@@ -117,6 +135,7 @@ export async function previous(source) {
     Scheduler.setTimelyTask(source, now);
 
     log(`set to previous wallpaper: ${fileName}`, source);
+    Notification.notify(source, `Set (previous) wallpaper: ${fileName}`)
 }
 
 async function resolvePreviousWallpaper(currentFileName) {
