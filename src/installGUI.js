@@ -339,7 +339,8 @@ function save() {
 
     // If change interval selected add first scheduled task right now
     if (interval) {
-        const date = new Date(now + interval)
+        const date = new Date(now + (interval*60*1000))
+
         let hours = date.getHours();
         if (hours.length < 2) {
             hours = "0" + hours
