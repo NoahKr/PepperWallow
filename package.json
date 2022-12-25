@@ -12,7 +12,7 @@
   },
   "type": "module",
   "scripts": {
-    "pep-install": "node src/install.js",
+    "pep-install": "npx qode src/installGUI.js",
     "pep-uninstall": "node src/uninstall.js",
     "boot": "node src/main.js boot",
     "next-wallpaper": "node src/main.js next-wallpaper",

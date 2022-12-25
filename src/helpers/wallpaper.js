@@ -177,6 +177,7 @@ export async function toggleFreeze(source) {
     Config.setFrozen(newFrozen);
     console.log('new frozen:', newFrozen)
 
+
     if (newFrozen) {
         Registry.createAndInstall('toggle-freeze', 'Unfreeze');
         log(`Froze wallpapers`, source);
