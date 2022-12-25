@@ -1,5 +1,6 @@
 import * as Wallpaper from "./helpers/wallpaper.js";
 import {logError} from "./helpers/log.js";
+import * as Notification from "./helpers/notifcation.js";
 
 async function main() {
     let source;
@@ -28,9 +29,14 @@ async function main() {
                 console.log(`Supplied action ${action} is not a valid action.`)
         }
 
-        process.exit(0);
+        // Small delay in exit to give enough time to display notification
+        setTimeout(() => process.exit(0), 5000)
     } catch (e) {
         logError(e, source);
+        Notification.notify(source, "PepperWallow encountered an error, see log for more details", true)
+
+        // Small delay in exit to give enough time to display notification
+        setTimeout(() => process.exit(0), 5000)
     }
 
 }

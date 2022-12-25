@@ -13,7 +13,7 @@ async function main() {
         return;
     }
 
-    Scheduler.uninstall();
+    Scheduler.uninstall('cmd-file');
     Registry.uninstall();
     Installation.uninstall();
 

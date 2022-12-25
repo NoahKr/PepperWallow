@@ -4,14 +4,15 @@ import childProcess from 'child_process';
 import * as Config from "./config.js";
 import * as Installation from './installation.js'
 import moment from "moment";
+import {log} from "./log.js";
 
 const BASE_TASK_NAME = 'PepperWallow';
 
-export function install() {
-    installScheduledTask('BOOT');
+export function install(source) {
+    installScheduledTask(source, 'BOOT');
 }
 
-export function setTimelyTask(timestamp) {
+export function setTimelyTask(source, timestamp) {
     const interval = Config.changeInterval();
     // If interval is empty, then no timely task should be set
     if (!interval) {
@@ -20,7 +21,7 @@ export function setTimelyTask(timestamp) {
 
     const changeAtTimestamp = timestamp + (interval*60*1000)
 
-    installScheduledTask('TIMELY', changeAtTimestamp)
+    installScheduledTask(source, 'TIMELY', changeAtTimestamp)
 }
 
 function createScheduledTaskXML(xmlName, action, commandParams = {}) {
@@ -41,11 +42,11 @@ function createScheduledTaskXML(xmlName, action, commandParams = {}) {
     Installation.setBinary(xmlName, content, 'utf16le');
 }
 
-function installScheduledTask(type, changeAtTimestamp = null) {
+function installScheduledTask(source, type, changeAtTimestamp = null) {
     let taskName = `${BASE_TASK_NAME}-${type}`
 
     // Ensure it doesn't exist yet so next command won't error.
-    remove(taskName);
+    remove(source, taskName);
 
     // Create file that we need to import in the next step.
     const xmlName = `PepperWallow-${type}.xml`;
@@ -65,15 +66,16 @@ function installScheduledTask(type, changeAtTimestamp = null) {
     childProcess.execSync(scheduleTaskCommand);
 }
 
-export function uninstall() {
-    remove('PepperWallow-BOOT');
-    remove('PepperWallow-TIMELY');
+export function uninstall(source) {
+    remove(source, 'PepperWallow-BOOT');
+    remove(source, 'PepperWallow-TIMELY');
 }
 
-function remove(taskName, ignoreOnError) {
+function remove(source, taskName) {
     try {
         childProcess.execSync(`schtasks /delete /tn ${taskName} /f >NUL 2>&1`);
     } catch (e) {
+        log(e, source)
         // Ignore, if task doesn't exist yet an error will be thrown, but that's a valid use case.
     }
 }

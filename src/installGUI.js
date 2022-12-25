@@ -317,20 +317,31 @@ function save() {
     }
 
     // Always uninstall these as they might have changed
-    Scheduler.uninstall();
+    Scheduler.uninstall('cmd-file');
     Registry.uninstall();
 
     const interval = settings.intervalChecked ? settings.interval : null;
     Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze);
-    Scheduler.install(); // Only installs boot by default. Interval is installed when wallpaper is first changed
+    Scheduler.install('cmd-file'); // Only installs boot by default. Interval is installed when wallpaper is first changed
 
     const now = Date.now();
     let changeWallpaperAt = 'boot'
+
     // If change interval selected add first scheduled task right now
     if (interval) {
         const date = new Date(now + interval)
-        changeWallpaperAt = date.getHours() + ":" + date.getMinutes();
-        Scheduler.setTimelyTask(now);
+        let hours = date.getHours();
+        if (hours.length < 2) {
+            hours = "0" + hours
+        }
+
+        let minutes = date.getMinutes();
+        if (minutes.length < 2) {
+            minutes = "0" + minutes
+        }
+
+        changeWallpaperAt = hours + ":" + minutes;
+        Scheduler.setTimelyTask('cmd-file', now);
     }
 
     if (settings.registryNextPrev) {
