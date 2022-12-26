@@ -20,7 +20,8 @@ export function getCurrentDirPath() {
 }
 
 export function resolveInvisibleCommand(baseCommand, split = false) {
-    const [invisibleVbsPath, commandPath] = parseInvisibleCommand(baseCommand);
+    const invisibleVbsPath = getPresetBinary('invisible.vbs', true);
+    const commandPath = escapeForWindowsSubSystem(baseCommand);
 
     const command = 'wscript.exe';
     if (split) {
@@ -31,23 +32,16 @@ export function resolveInvisibleCommand(baseCommand, split = false) {
     return fullCommand;
 }
 
-function parseInvisibleCommand(baseCommand) {
-    const invisibleVbsPath = getPresetBinary('invisible.vbs');
-    const commandPath = escapeForWindowsSubSystem(baseCommand);
-
-    return [invisibleVbsPath, commandPath];
-}
-
 export function escapeForWindowsSubSystem(command) {
     return command.replace(/\\/g, '\\\\\\\\');
 }
 
-function getPresetBinary(binaryName, escapeForWindowsSubsystem = false) {
+function getPresetBinary(binaryName, escapeForWS = false) {
     const currentDir = getCurrentDirPath();
     const path = `${currentDir}\\bin\\${binaryName}`;
 
-    if (escapeForWindowsSubsystem) {
-        return escapeForWindowsSubsystem(path);
+    if (escapeForWS) {
+        return escapeForWindowsSubSystem(path);
     }
 
     return path;
