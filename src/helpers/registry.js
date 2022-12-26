@@ -1,5 +1,5 @@
 import {
-    getCurrentDirPath,
+    getCurrentDirPath, getWindowsUserID,
     resolveElevatedInvisibleCommand,
     resolveInvisibleCommand
 } from "./utils.js";
@@ -13,18 +13,19 @@ export function createAndInstall(action, text) {
 
 function createRegistryFile(action, text) {
     const actionCmd = Installation.createActionCmd(action, 'registry');
-    const command = resolveElevatedInvisibleCommand(actionCmd);
+    const command = resolveInvisibleCommand(actionCmd);
     const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
+    const userId = getWindowsUserID();
 
     // Key is prefixed with 000_ so it appears above other contextMenu items
     const fileContent = `Windows Registry Editor Version 5.00
 
-[HKEY_CLASSES_ROOT\\DesktopBackground\\Shell\\000_PepperWallow-${action}]
+[HKEY_USERS\\${userId}_Classes\\DesktopBackground\\Shell\\000_PepperWallow-${action}]
 @="${text}"
 "Icon"="\\"${currentDir}\\\\assets\\\\salt.ico\\""
 "Position"="Bottom"
 
-[HKEY_CLASSES_ROOT\\DesktopBackground\\Shell\\000_PepperWallow-${action}\\command]
+[HKEY_USERS\\${userId}_Classes\\DesktopBackground\\Shell\\000_PepperWallow-${action}\\command]
 @="${command}"
 
 `;
@@ -34,7 +35,7 @@ function createRegistryFile(action, text) {
 
 function installRegistry(action) {
     const binaryPath = Installation.getBinaryPath(`registry-${action}.reg`, true).replace(/\\/g, '\\\\');
-    const command = `regedit.exe /s ${binaryPath}`;
+    const command = `reg.exe IMPORT ${binaryPath}`;
 
     childProcess.execSync(command);
 }
