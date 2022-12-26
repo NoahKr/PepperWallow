@@ -1,3 +1,8 @@
+# 1.0.1
+- Changed: made registry and shtasks installs no longer need administrative access, 
+  this way without the UAC popup a more smooth user experience is provided
+- Removed: elevation logic
+
 # 1.0.0
 - Added: GUI installer which includes more configurability
 - Added: freeze / unfreeze registry function
