@@ -132,6 +132,7 @@ export async function previous(source) {
     const [previousPath, fileName] = await resolvePreviousWallpaper(currentFileName);
     if (!previousPath) {
         log(`attempted to set to previous wallpaper, but no previous wallpaper found`, source);
+        Notification.notify(source, `No previous wallpaper found`)
         return;
     }
 

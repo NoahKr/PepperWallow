@@ -12,12 +12,12 @@ goto check_Permissions
 :check_Permissions
     net session >nul 2>&1
     if %errorLevel% == 0 (
-        echo Installing dependencies...
-		call npm install
-        echo Launching configuration GUI...
-		npm run pep-install
+        echo Failure: This script SHOULD NOT be run with administrator permissions. Please rerun it as normal user.
     ) else (
-        echo Failure: This script requires administrator permissions. Please rerun it as administrator.
+        echo Installing dependencies...
+        call npm install
+        echo Launching configuration GUI...
+        npm run pep-install
     )
 
     pause >nul

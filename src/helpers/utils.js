@@ -1,6 +1,7 @@
 import rlp from 'readline';
 import path from 'path';
 import childProcess from 'child_process';
+
 const __dirname = path.resolve();
 
 const rl = rlp.createInterface({
@@ -19,7 +20,8 @@ export function getCurrentDirPath() {
 }
 
 export function resolveInvisibleCommand(baseCommand, split = false) {
-    const [invisibleVbsPath, commandPath] = parseInvisibleCommand(baseCommand);
+    const invisibleVbsPath = getPresetBinary('invisible.vbs', true);
+    const commandPath = escapeForWindowsSubSystem(baseCommand);
 
     const command = 'wscript.exe';
     if (split) {
@@ -30,30 +32,19 @@ export function resolveInvisibleCommand(baseCommand, split = false) {
     return fullCommand;
 }
 
-function parseInvisibleCommand(baseCommand) {
-    const currentDir = getCurrentDirPath();
-
-    const invisibleVbsPath = escapeForWindowsSubSystem(`${currentDir}\\bin\\invisible.vbs`);
-    const commandPath = escapeForWindowsSubSystem(baseCommand);
-
-    return [invisibleVbsPath, commandPath];
-}
-
-export function resolveElevatedInvisibleCommand(baseCommand) {
-    const [invisibleVbsPath, commandPath] = parseInvisibleCommand(baseCommand);
-    const elevationCommand = escapeForWindowsSubSystem(getHelpBinaryPath('elevate.bat'))
-
-    const fullCommand = `${elevationCommand} wscript.exe ${invisibleVbsPath} ${commandPath}`;
-    return fullCommand;
-}
-
-function escapeForWindowsSubSystem(command) {
+export function escapeForWindowsSubSystem(command) {
     return command.replace(/\\/g, '\\\\\\\\');
 }
 
-function getHelpBinaryPath(filename) {
+function getPresetBinary(binaryName, escapeForWS = false) {
     const currentDir = getCurrentDirPath();
-    return `${currentDir}\\bin\\${filename}`
+    const path = `${currentDir}\\bin\\${binaryName}`;
+
+    if (escapeForWS) {
+        return escapeForWindowsSubSystem(path);
+    }
+
+    return path;
 }
 
 export function getWindowsUserID() {
