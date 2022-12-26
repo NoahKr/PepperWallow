@@ -2,7 +2,7 @@ import * as Installation from './installation.js';
 
 export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false) {
 
-    // TODO do not clear used and next wallpapers
+    // do not clear runtime data, we want to set the configuration, not reset the entire application
     const usedWallpapersVal = usedWallpapers();
     const nextWallpapersVal = nextWallpapers();
     const wallpaperChangedAtVal = wallpaperChangedAt();

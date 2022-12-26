@@ -1,6 +1,7 @@
 import {
-    getCurrentDirPath, getWindowsUserID,
-    resolveElevatedInvisibleCommand,
+    escapeForWindowsSubSystem,
+    getCurrentDirPath,
+    getWindowsUserID,
     resolveInvisibleCommand
 } from "./utils.js";
 import childProcess from 'child_process';
@@ -14,7 +15,7 @@ export function createAndInstall(action, text) {
 function createRegistryFile(action, text) {
     const actionCmd = Installation.createActionCmd(action, 'registry');
     const command = resolveInvisibleCommand(actionCmd);
-    const currentDir = getCurrentDirPath().replace(/\\/g, '\\\\\\\\');
+    const currentDir = escapeForWindowsSubSystem(getCurrentDirPath());
     const userId = getWindowsUserID();
 
     // Key is prefixed with 000_ so it appears above other contextMenu items

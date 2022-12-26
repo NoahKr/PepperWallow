@@ -4,7 +4,6 @@ import childProcess from 'child_process';
 import * as Config from "./config.js";
 import * as Installation from './installation.js'
 import moment from "moment";
-import {log} from "./log.js";
 
 const BASE_TASK_NAME = 'PepperWallow';
 
