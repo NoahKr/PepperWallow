@@ -20,6 +20,7 @@
     "show-current": "node src/main.js show-current",
     "previous-wallpaper": "node src/main.js previous-wallpaper",
     "toggle-freeze": "node src/main.js toggle-freeze",
+    "discard-current": "node src/main.js discard-current",
     "clear-log": "rm .log"
   },
   "repository": {

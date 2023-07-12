@@ -25,6 +25,9 @@ async function main() {
             case "toggle-freeze":
                 await Wallpaper.toggleFreeze(source);
                 break;
+            case "discard-current":
+                await Wallpaper.discardCurrent(source);
+                break;
             default:
                 console.log(`Supplied action ${action} is not a valid action.`)
         }

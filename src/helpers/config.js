@@ -1,6 +1,6 @@
-import * as Installation from './installation.js';
+qimport * as Installation from './installation.js';
 
-export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false) {
+export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false, discardDir = null) {
 
     // do not clear runtime data, we want to set the configuration, not reset the entire application
     const usedWallpapersVal = usedWallpapers();
@@ -23,7 +23,8 @@ export function set(wallpaperPath, changeInterval = null, registryNextPrev = fal
         usedWallpapers: usedWallpapersVal,
         nextWallpapers: nextWallpapersVal,
         wallpaperChangedAt: wallpaperChangedAtVal,
-        frozen: frozenVal
+        frozen: frozenVal,
+        discardedWallpapersPath: discardDir
     }));
 }
 
@@ -45,7 +46,8 @@ function get() {
             usedWallpapers: [],
             nextWallpapers: [],
             wallpaperChangedAt: null,
-            frozen: false
+            frozen: false,
+            discardedWallpapersPath: null
         }
     }
 
@@ -92,6 +94,10 @@ export function isFrozen() {
     return get().frozen;
 }
 
+export function getDiscardedWallpapersPath() {
+    return get().discardedWallpapersPath
+}
+
 export function shiftNextWallpaper() {
     const config = get();
 
@@ -108,6 +114,16 @@ export function updateUsedWallpapers(usedWallpaper) {
     // Only update if not already set.
     if (config.usedWallpapers.indexOf(usedWallpaper) === -1) {
         config.usedWallpapers.push(usedWallpaper);
+        update(config);
+    }
+}
+
+export function removeWallpaperFromUsedWallpapers(currentWallpaper) {
+    const config = get();
+
+    const index = config.usedWallpapers.indexOf(currentWallpaper);
+    if (index !== -1) {
+        config.usedWallpapers.splice(index, 1);
         update(config);
     }
 }

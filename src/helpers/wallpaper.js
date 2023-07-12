@@ -7,6 +7,7 @@ import childProcess from 'child_process';
 import * as Scheduler from "./scheduler.js";
 import * as Registry from "./registry.js";
 import * as Notification from "./notifcation.js";
+import {removeWallpaperFromUsedWallpapers} from "./config.js";
 
 async function current() {
     return await getWallpaper();
@@ -191,6 +192,25 @@ export async function toggleFreeze(source) {
         await next(source, false, true);
     }
 
+}
+
+export async function discardCurrent(source) {
+    const currentPath = await current();
+    const fileName = resolveFileNameFromPath(currentPath);
+
+    const newPath = Config.getDiscardedWallpapersPath() + '\\' + fileName;
+    if (fs.existsSync(newPath)) {
+        throw new Error(`File '${fileName}' already exists in discard folder`)
+    }
+
+    fs.renameSync(currentPath, newPath);
+
+    removeWallpaperFromUsedWallpapers(fileName)
+
+    log(`Discarded current wallpaper (${fileName})`, source);
+    Notification.notify(source, `Discarded wallpaper: ${fileName}`)
+
+    await next(source);
 }
 
 
