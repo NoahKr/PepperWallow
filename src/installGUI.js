@@ -27,13 +27,19 @@ let settings = {
   registryShowCurrent: false,
   registryFreeze: false,
   notifications: false,
+  discardDir: null,
+  discardChecked: false // only used here.
 };
 
 function main() {
     log(`configuration opened`, 'cmd-file');
 
-    loadCurrentConfig();
-    global.win = buildWindow();
+    try {
+        loadCurrentConfig();
+        global.win = buildWindow();
+    } catch (e) {
+        console.log('e', e)
+    }
 }
 
 function loadCurrentConfig() {
@@ -50,6 +56,8 @@ function loadCurrentConfig() {
     settings.registryShowCurrent = Config.registryShowCurrent();
     settings.registryFreeze = Config.registryFreeze();
     settings.notifications = Config.notifications();
+    settings.discardDir = Config.getDiscardedWallpapersPath();
+    settings.discardChecked = !!settings.discardDir;
 }
 
 function buildWindow() {
@@ -61,7 +69,7 @@ function buildWindow() {
     #root-view {
       padding: 15px 15px 15px 15px;
     }
-    #selectDirRow, #intervalRow, #submitBar {
+    #selectDirRow, #intervalRow, #discardRow, #submitBar {
         flex-direction: row;
     }
     #selectDirLabel {
@@ -210,23 +218,23 @@ function buildBasicSection(rootLayout) {
     return rootLayout;
 }
 
-function selectFile(selectDirButton) {
+function selectFile(selectDirButton, dirProperty = 'wallpaperDir') {
     const fileDialog = new QFileDialog();
     fileDialog.setFileMode(FileMode.Directory);
     fileDialog.exec();
 
     const selectedFiles = fileDialog.selectedFiles();
-    settings.wallpaperDir = _.get(selectedFiles, '0');
+    settings[dirProperty] = _.get(selectedFiles, '0');
 
-    setSelectDirButtonText(selectDirButton)
+    setSelectDirButtonText(selectDirButton, dirProperty)
 
     return selectedFiles
 }
 
-function setSelectDirButtonText(selectDirButton) {
+function setSelectDirButtonText(selectDirButton, dirProperty = 'wallpaperDir') {
     let text = 'Select';
 
-    const wallpaperDir = settings.wallpaperDir;
+    const wallpaperDir = settings[dirProperty];
     if (wallpaperDir) {
         text = wallpaperDir;
 
@@ -271,11 +279,47 @@ function buildRegistrySection(rootLayout) {
     });
     freezeCheckbox.setChecked(settings.registryFreeze);
 
+    const discardRow = new QWidget();
+    const discardLayout = new FlexLayout();
+    discardRow.setLayout(discardLayout);
+    discardRow.setObjectName('discardRow');
+
+    const discardLabel = new QLabel();
+    discardLabel.setText('- directory: ');
+
+    const selectDiscardDirButton = new QPushButton();
+    selectDiscardDirButton.setObjectName('selectDirButton');
+    selectDiscardDirButton.addEventListener('clicked', () => selectFile(selectDiscardDirButton, 'discardDir'));
+    setSelectDirButtonText(selectDiscardDirButton, 'discardDir')
+
+    discardChecked(discardLabel, selectDiscardDirButton);
+
+    const discardCheckbox = new QCheckBox();
+    discardCheckbox.setText("Discard (beta)");
+    discardCheckbox.addEventListener('clicked', (checked) => {
+        settings.discardChecked = checked;
+        discardChecked(discardLabel, selectDiscardDirButton);
+    });
+    discardCheckbox.setChecked(settings.discardChecked);
+
+    discardLayout.addWidget(discardCheckbox);
+    discardLayout.addWidget(discardLabel);
+    discardLayout.addWidget(selectDiscardDirButton);
+
     rootLayout.addWidget(nextPrevCheckbox);
     rootLayout.addWidget(showCurrentCheckbox);
     rootLayout.addWidget(freezeCheckbox);
+    rootLayout.addWidget(discardRow);
     return rootLayout;
 }
+
+function discardChecked(discardLabel, selectDiscardDirButton) {
+    const checked = settings.discardChecked;
+
+    discardLabel.setHidden(!checked)
+    selectDiscardDirButton.setHidden(!checked)
+}
+
 
 function addSectionHeader(layout, titleText, descriptionText) {
     layout = addSpacer(layout);
@@ -331,7 +375,8 @@ function save() {
     Registry.uninstall();
 
     const interval = settings.intervalChecked ? settings.interval : null;
-    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze, settings.notifications);
+    const discardDir = settings.discardChecked ? settings.discardDir : null;
+    Config.set(settings.wallpaperDir, interval, settings.registryNextPrev, settings.registryShowCurrent, settings.registryFreeze, settings.notifications, discardDir);
     Scheduler.install('cmd-file'); // Only installs boot by default. Interval is installed when wallpaper is first changed
 
     const now = Date.now();
@@ -369,6 +414,10 @@ function save() {
         } else {
             Registry.createAndInstall('toggle-freeze', 'Freeze');
         }
+    }
+
+    if (discardDir) {
+        Registry.createAndInstall('discard-current', 'Discard Wallpaper');
     }
 
     log(`application installed/configured, settings: ${JSON.stringify(settings)}`, 'cmd-file');
