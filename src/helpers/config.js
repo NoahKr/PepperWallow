@@ -1,4 +1,4 @@
-qimport * as Installation from './installation.js';
+import * as Installation from './installation.js';
 
 export function set(wallpaperPath, changeInterval = null, registryNextPrev = false, registryShowCurrent = false, registryFreeze = false, notifications = false, discardDir = null) {
 
