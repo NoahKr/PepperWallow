@@ -24,6 +24,7 @@ These actions include:
 - "Previous Wallpaper" - changes the wallpaper to the previous wallpaper
 - "Show Current Wallpaper" - opens explorer and highlights the currently applied wallpaper.
 - "Freeze / Unfreeze" - freezing makes it so your wallpapers do not change, even if any other trigger conditions (like boot or interval) are met. Once you unfreeze the wallpaper will be changed (if the interval condition has been met. It does not check if the boot condition was ever met)
+- "Discard" - First moves the current wallpaper to the preconfigured discard directory. Then changes the wallpaper to the next one (essentially a "Next Wallpaper" action).
 
 # Uninstall
 1. Open the directory in explorer

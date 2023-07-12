@@ -1,3 +1,6 @@
+# 1.1.0
+- Added: discard registry function
+
 # 1.0.1
 - Changed: made registry and shtasks installs no longer need administrative access, 
   this way without the UAC popup a more smooth user experience is provided
